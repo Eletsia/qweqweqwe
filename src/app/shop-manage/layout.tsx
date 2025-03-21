@@ -7,13 +7,9 @@ export default function SellLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`antialiased`}>
-        <SidebarProvider>
-          <AppSidebar variant="inset" />
-          {children}
-        </SidebarProvider>
-      </body>
-    </html>
+    <SidebarProvider>
+      <AppSidebar variant="inset" />
+      {children}
+    </SidebarProvider>
   );
 }
