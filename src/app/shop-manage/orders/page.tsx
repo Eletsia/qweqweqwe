@@ -2,7 +2,7 @@ import { SiteHeader } from '@/components/shop-manage/site-header';
 import { SidebarInset } from '@/components/ui/sidebar';
 import React from 'react';
 
-const page = () => {
+const OrderPage = () => {
   return (
     <SidebarInset>
       <SiteHeader headerTitle="주문 목록" />
@@ -17,4 +17,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default OrderPage;
