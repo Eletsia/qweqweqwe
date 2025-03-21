@@ -1,6 +1,6 @@
 'use client';
 
-import { CartItem } from '@/app/cart/type';
+import { CartItem } from '@/types/type';
 import { cartStore } from '@/store/cartStore';
 import { Button } from '../ui/button';
 
