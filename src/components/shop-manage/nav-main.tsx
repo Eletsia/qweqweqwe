@@ -31,7 +31,7 @@ export function NavMain({
   };
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className="mt-5">
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">

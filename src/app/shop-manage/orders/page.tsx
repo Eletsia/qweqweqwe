@@ -1,4 +1,4 @@
-import { SiteHeader } from '@/components/site-header';
+import { SiteHeader } from '@/components/shop-manage/site-header';
 import { SidebarInset } from '@/components/ui/sidebar';
 import React from 'react';
 

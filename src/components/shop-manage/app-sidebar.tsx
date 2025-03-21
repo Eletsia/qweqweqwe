@@ -8,8 +8,8 @@ import {
   LayoutDashboardIcon,
   ListIcon,
 } from 'lucide-react';
-import { NavMain } from '@/components/nav-main';
-import { NavUser } from '@/components/nav-user';
+import { NavMain } from '@/components/shop-manage/nav-main';
+import { NavUser } from '@/components/shop-manage/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter } from '@/components/ui/sidebar';
 
 const data = {
@@ -81,7 +81,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="offcanvas" {...props} className="pt-[57px]">
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>

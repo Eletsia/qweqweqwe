@@ -1,20 +1,34 @@
-import { SiteHeader } from '@/components/site-header';
+import { SiteHeader } from '@/components/shop-manage/site-header';
 import { SidebarInset } from '@/components/ui/sidebar';
-import React from 'react';
+import { DataTable } from '@/components/shop-manage/data-table';
+import { columns } from './columns';
+import { Payment } from './columns';
 
-const page = () => {
+export const payments: Payment[] = [
+  {
+    id: '728ed52f',
+    stock: 100,
+    status: '판매중',
+    title: '자전거',
+    price: 100000,
+  },
+  {
+    id: '489e1d42',
+    stock: 0,
+    status: '품절',
+    title: '오토바이',
+    price: 15000000,
+  },
+  // ...
+];
+
+const ShopManagePage = () => {
   return (
     <SidebarInset>
       <SiteHeader headerTitle="내 상품 목록" />
-      <div className="flex flex-1 flex-col">
-        <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-            <div className="px-4 lg:px-6"></div>
-          </div>
-        </div>
-      </div>
+      <DataTable columns={columns} data={payments} />
     </SidebarInset>
   );
 };
 
-export default page;
+export default ShopManagePage;
