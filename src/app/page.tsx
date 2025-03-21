@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import {
   Card,
   CardHeader,
@@ -32,18 +34,20 @@ const items = [
 ];
 
 export default function HomePage() {
+  const router = useRouter();
+
   return (
     <main className="p-4 max-w-6xl mx-auto">
       <h1 className="text-xl font-semibold mb-4">전체 상품</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {items.map((item) => (
-          <Card key={item.item_id} className="border">
+          <Card
+            key={item.item_id}
+            className="border cursor-pointer"
+            onClick={() => router.push(`/detail/${item.item_id}`)}
+          >
             <CardHeader>
-              <img
-                src={item.thumbnail}
-                alt={item.title}
-                className="w-full h-auto max-h-40 object-cover"
-              />
+              <img src={item.thumbnail} alt={item.title} className="w-full h-auto max-h-40 object-cover" />
               <CardTitle className="mt-2 text-base">{item.title}</CardTitle>
             </CardHeader>
             <CardContent>
@@ -55,4 +59,4 @@ export default function HomePage() {
       </div>
     </main>
   );
-};
+}
