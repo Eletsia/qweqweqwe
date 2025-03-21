@@ -1,6 +1,6 @@
 'use client';
 
-import { CartItem } from '@/types/type';
+import { CartStorageItem } from '@/types/cartType';
 import { cartStore } from '@/store/cartStore';
 import { Button } from '../ui/button';
 
@@ -11,12 +11,15 @@ import { Button } from '../ui/button';
  * ```tsx
  * <AddCartButton {...someItem} />
  * ```
- * 파라미터 item은 CartItem 타입만 지켜서 넣어주시면 됩니다.
+ * 파라미터 item은 CartStorageItem 타입만 지켜서 넣어주시면 됩니다.
  */
-export const AddCartButton = (item: CartItem) => {
-  const { addItem } = cartStore();
+export const AddCartButton = (item: CartStorageItem) => {
+  const addItem = cartStore((state) => state.addItem);
 
-  const handleAddItemToCart = (item: CartItem) => {
+  /**
+   * 장바구니 추가 핸들러 함수
+   */
+  const handleAddItemToCart = (item: CartStorageItem) => {
     addItem(item);
   };
 

@@ -12,9 +12,17 @@ export type Item = {
 };
 
 /**
- * 장바구니 화면에서 필요한 정보만 담고 있는 아이템 타입
+ * 로컬 스토리지에 저장하기 위한 타입
+ */
+export type CartStorageItem = {
+  id: Item['id'];
+  amount: number;
+};
+
+/**
+ * 장바구니에서 보여주기 위한 타입
  */
 export type CartItem = {
-  id: Item['id'];
+  item: Item;
   amount: number;
 };

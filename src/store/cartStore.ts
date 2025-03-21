@@ -1,16 +1,28 @@
-import { CartItem } from '@/types/type';
+import { CartStorageItem, Item } from '@/types/cartType';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 type CartStore = {
   /** 현재 저장된 장바구니 목록 */
-  items: { [key: number]: number };
+  items: { [key: Item['id']]: number };
 
   /**
    * 장바구니에 아이템 추가 및 업데이트
    * @param newItem - 새로운 아이템
    */
-  addItem: (newItem: CartItem) => void;
+  addItem: (newItem: CartStorageItem) => void;
+
+  /**
+   * 아이템의 개수를 1 증가
+   * @param itemId - 아이템의 id
+   */
+  increment: (itemId: number) => void;
+
+  /**
+   * 아이템의 개수를 1 감소
+   * @param itemId - 아이템의 id
+   */
+  decrement: (itemId: number) => void;
 };
 
 /**
@@ -19,17 +31,40 @@ type CartStore = {
  */
 export const cartStore = create<CartStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       items: [],
 
-      addItem: (newItem: CartItem) => {
-        const items = get().items;
-        const amount = items[newItem.id];
-        if (amount) {
-          alert('동일한 상품이 장바구니에 있어 수량이 변경되었습니다.');
-        }
-        set({ items: { ...items, [newItem.id]: newItem.amount + (amount || 0) } });
+      addItem: (newItem: CartStorageItem) => {
+        set((state) => {
+          const amount = state.items[newItem.id];
+          if (amount) {
+            alert('동일한 상품이 장바구니에 있어 수량이 변경되었습니다.');
+          }
+          return { items: { ...state.items, [newItem.id]: newItem.amount + (amount || 0) } };
+        });
       },
+
+      increment: (itemId: number) =>
+        set((state) => {
+          const currentQuantity = state.items[itemId];
+          return {
+            items: {
+              ...state.items,
+              [itemId]: currentQuantity + 1,
+            },
+          };
+        }),
+
+      decrement: (itemId: number) =>
+        set((state) => {
+          const currentQuantity = state.items[itemId];
+          return {
+            items: {
+              ...state.items,
+              [itemId]: currentQuantity - 1,
+            },
+          };
+        }),
     }),
     {
       name: 'cart-storage',
