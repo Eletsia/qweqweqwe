@@ -15,10 +15,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import supabase from '@/services/supabase';
-// import useUserStore from '@/store/useUserStore';
+import useAuthStore from '@/store/authStore';
 
 export default function RegisterForm() {
-  //   const { setUserData } = useUserStore();
+  const { login } = useAuthStore();
 
   const formSchema = z
     .object({
@@ -61,12 +61,22 @@ export default function RegisterForm() {
         throw new Error(error.message || '회원가입 실패');
       }
 
-      //   // 가입 후 zustand 저장 로직
-      //   setUserData(registerData);
+      login(
+        {
+          email: registerData.user?.email,
+          nickname: registerData.user?.user_metadata?.nickname || '',
+        },
+        // 아래 타입 오류 월요일 튜터님께 문의 예정..
+        registerData.session?.access_token,
+      );
       alert('회원가입이 완료되었습니다.');
       router.push('/login');
-    } catch (error) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('알 수 없는 오류 발생');
+      }
     }
   };
 

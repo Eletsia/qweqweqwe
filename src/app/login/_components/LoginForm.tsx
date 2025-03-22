@@ -15,10 +15,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import supabase from '@/services/supabase';
 import Link from 'next/link';
-// import useUserStore from '@/store/useUserStore';
+import useAuthStore from '@/store/authStore';
 
 export default function LoginForm() {
-  //   const { setUserData } = useUserStore();
+  const { login } = useAuthStore();
 
   const formSchema = z.object({
     email: z.string().email({ message: '유효한 이메일을 입력해 주세요.' }),
@@ -47,10 +47,22 @@ export default function LoginForm() {
         throw new Error(error.message || '로그인 실패');
       }
 
+      login(
+        {
+          // 타입에러 임시방편
+          email: authData.user.email!,
+          nickname: authData.user.user_metadata?.nickname || '',
+        },
+        authData.session.access_token,
+      );
       alert('로그인 성공');
-      // 주스탄드 써서 관리를 할?말?
-    } catch (error: any) {
-      alert(error.message);
+      // 타입에러 임시방편
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('알 수 없는 오류 발생');
+      }
     }
   };
 
