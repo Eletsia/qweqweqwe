@@ -13,6 +13,12 @@ type CartStore = {
   addItem: (newItem: CartStorageItem) => void;
 
   /**
+   * 장바구니에서 아이템 삭제
+   * @param idList - 삭제할 아이템의 id 리스트
+   */
+  removeItem: (idList: string[]) => void;
+
+  /**
    * 아이템의 개수를 1 증가
    * @param itemId - 아이템의 id
    */
@@ -41,6 +47,16 @@ export const cartStore = create<CartStore>()(
             alert('동일한 상품이 장바구니에 있어 수량이 변경되었습니다.');
           }
           return { items: { ...state.items, [newItem.id]: newItem.amount + (amount || 0) } };
+        });
+      },
+
+      removeItem: (idList: string[]) => {
+        set((state) => {
+          const items = { ...state.items };
+          idList.forEach((id: string) => {
+            delete items[parseInt(id)];
+          });
+          return { items };
         });
       },
 

@@ -1,11 +1,14 @@
 import { CartItem } from '@/types/cartType';
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '../ui/checkbox';
-import { TableCell } from '../ui/table';
 import Image from 'next/image';
 import { formatNumber } from '@/utils/formatNumber';
 import { AmountControlButton } from './AmountControlButton';
+import { cartStore } from '@/store/cartStore';
 
+/**
+ * 장바구니 테이블 컬럼 데이터
+ */
 export const cartColumns: ColumnDef<CartItem>[] = [
   {
     id: 'select',
@@ -23,7 +26,7 @@ export const cartColumns: ColumnDef<CartItem>[] = [
         className="m-2"
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="행 선택"
+        aria-label="상품 선택"
       />
     ),
     enableSorting: false,
@@ -36,7 +39,7 @@ export const cartColumns: ColumnDef<CartItem>[] = [
       const item = row.original;
 
       return (
-        <TableCell className="flex flex-row gap-2 py-5">
+        <div className="flex flex-row gap-2 py-5">
           <Image
             src={item.item.thumbnail}
             alt=""
@@ -48,7 +51,7 @@ export const cartColumns: ColumnDef<CartItem>[] = [
             <h3 className="truncate font-bold">{item.item.title}</h3>
             <p className="line-clamp-3 overflow-hidden text-gray-500">{item.item.content}</p>
           </div>
-        </TableCell>
+        </div>
       );
     },
   },
@@ -59,9 +62,9 @@ export const cartColumns: ColumnDef<CartItem>[] = [
       const item = row.original;
 
       return (
-        <TableCell className="whitespace-nowrap px-5 font-semibold">
+        <div className="whitespace-nowrap px-5 font-semibold">
           {formatNumber(item.item.price)}원
-        </TableCell>
+        </div>
       );
     },
   },
@@ -70,15 +73,32 @@ export const cartColumns: ColumnDef<CartItem>[] = [
     header: '수량',
     cell: ({ row }) => {
       const item = row.original;
+      const increment = cartStore((state) => state.increment);
+      const decrement = cartStore((state) => state.decrement);
+
+      /**
+       * [+] 버튼 함수 핸들러
+       */
+      const handleUpAmount = () => {
+        increment(item.item.id);
+      };
+
+      /**
+       * [-] 버튼 함수 핸들러
+       */
+      const handleDownAmount = () => {
+        if (item.amount <= 1) return;
+        decrement(item.item.id);
+      };
 
       return (
-        <TableCell className="px-5">
+        <div className="px-5">
           <AmountControlButton
             amount={item.amount}
-            handleUpAmount={() => {}}
-            handleDownAmount={() => {}}
+            handleUpAmount={handleUpAmount}
+            handleDownAmount={handleDownAmount}
           />
-        </TableCell>
+        </div>
       );
     },
   },
@@ -89,9 +109,9 @@ export const cartColumns: ColumnDef<CartItem>[] = [
       const item = row.original;
 
       return (
-        <TableCell className="whitespace-nowrap px-5 font-semibold">
+        <div className="whitespace-nowrap px-5 font-semibold">
           {formatNumber(item.item.price * item.amount)}원
-        </TableCell>
+        </div>
       );
     },
   },

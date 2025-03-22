@@ -2,9 +2,12 @@
 
 import { CartItem } from '@/types/cartType';
 import { cartStore } from '@/store/cartStore';
-import { DataTable } from '../shop-manage/data-table';
 import { cartColumns } from './CartColumnDef';
+import { DataTable } from './CartDataTable';
 
+/**
+ * 장바구니 아이템 리스트 컴포넌트
+ */
 export const ItemCardList = () => {
   const items = cartStore((state) => state.items);
 
