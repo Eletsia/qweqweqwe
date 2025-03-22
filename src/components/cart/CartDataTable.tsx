@@ -1,6 +1,12 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  RowSelectionState,
+  useReactTable,
+} from '@tanstack/react-table';
 
 import {
   Table,
@@ -10,10 +16,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { CartItem } from '@/types/cartType';
 import { cartStore } from '@/store/cartStore';
+import { CartTotal } from './CartTotal';
 
 interface DataTableProps {
   columns: ColumnDef<CartItem>[];
@@ -26,8 +33,17 @@ interface DataTableProps {
  * @param DataTableProps.data - 아이템 리스트
  */
 export function DataTable({ columns, data }: DataTableProps) {
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const removeItem = cartStore((state) => state.removeItem);
+
+  // 체크 박스 선택 true를 디폴트 값으로 설정
+  useEffect(() => {
+    const allSelected: RowSelectionState = {};
+    data.forEach((row) => {
+      allSelected[row.item.id] = true;
+    });
+    setRowSelection(allSelected);
+  }, [data]);
 
   /**
    * 테이블 인스턴스
@@ -50,6 +66,7 @@ export function DataTable({ columns, data }: DataTableProps) {
    */
   const handleClickDelete = () => {
     const idList = Object.keys(rowSelection);
+
     if (idList.length === 0) return;
     const isConfirmed = confirm('선택한 상품을 삭제하시겠습니까?');
     if (isConfirmed) {
@@ -57,13 +74,21 @@ export function DataTable({ columns, data }: DataTableProps) {
     }
   };
 
+  /**
+   * 체크박스로 선택한 아이템 리스트를 반환하는 함수
+   * @returns 선택한 아이템 리스트
+   */
+  const getSelectedRowsOriginal = (): CartItem[] => {
+    return table.getSelectedRowModel().rows.map((row) => row.original);
+  };
+
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       {table.getRowModel().rows?.length === 0 ? (
         <div className="p-5 text-gray-500">장바구니가 비어있습니다.</div>
       ) : (
         <>
-          <Button onClick={handleClickDelete} className="m-2 p-3 text-xs font-semibold">
+          <Button onClick={handleClickDelete} className="self-start p-3 text-xs font-semibold">
             선택 삭제
           </Button>
           <div className="space-y-4">
@@ -102,6 +127,7 @@ export function DataTable({ columns, data }: DataTableProps) {
               </Table>
             </div>
           </div>
+          <CartTotal items={getSelectedRowsOriginal()} />
         </>
       )}
     </div>

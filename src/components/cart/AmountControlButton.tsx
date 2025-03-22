@@ -1,5 +1,6 @@
 'use client';
 
+import { formatNumber } from '@/utils/formatNumber';
 import { Button } from '../ui/button';
 import { Minus, Plus } from 'lucide-react';
 
@@ -23,7 +24,7 @@ export const AmountControlButton = ({
       <Button variant="outline" size="icon" onClick={handleDownAmount}>
         <Minus />
       </Button>
-      <span>{amount}</span>
+      <span>{formatNumber(amount)}</span>
       <Button variant="outline" size="icon" onClick={handleUpAmount}>
         <Plus />
       </Button>

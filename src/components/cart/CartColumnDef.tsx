@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { formatNumber } from '@/utils/formatNumber';
 import { AmountControlButton } from './AmountControlButton';
 import { cartStore } from '@/store/cartStore';
+import Link from 'next/link';
 
 /**
  * 장바구니 테이블 컬럼 데이터
@@ -39,7 +40,7 @@ export const cartColumns: ColumnDef<CartItem>[] = [
       const item = row.original;
 
       return (
-        <div className="flex flex-row gap-2 py-5">
+        <Link href={`/detail/${item.item.id}`} className="flex flex-row gap-2 py-5">
           <Image
             src={item.item.thumbnail}
             alt=""
@@ -51,7 +52,7 @@ export const cartColumns: ColumnDef<CartItem>[] = [
             <h3 className="truncate font-bold">{item.item.title}</h3>
             <p className="line-clamp-3 overflow-hidden text-gray-500">{item.item.content}</p>
           </div>
-        </div>
+        </Link>
       );
     },
   },
