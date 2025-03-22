@@ -6,11 +6,20 @@ type CartStore = {
   /** 현재 저장된 장바구니 목록 */
   items: { [key: Item['id']]: number };
 
+  /** 현재 저장된 아이템 id 목록 */
+  itemIds: number[];
+
   /**
-   * 장바구니에 아이템 추가 및 업데이트
+   * 장바구니에 새로운 아이템 추가
    * @param newItem - 새로운 아이템
    */
   addItem: (newItem: CartStorageItem) => void;
+
+  /**
+   * 장바구니 아이템 수량 업데이트
+   * @param item - 업데이트할 아이템
+   */
+  updateItem: (item: CartStorageItem) => void;
 
   /**
    * 장바구니에서 아이템 삭제
@@ -38,15 +47,21 @@ type CartStore = {
 export const cartStore = create<CartStore>()(
   persist(
     (set) => ({
-      items: [],
+      items: {},
+
+      itemIds: [],
 
       addItem: (newItem: CartStorageItem) => {
         set((state) => {
-          const amount = state.items[newItem.id];
-          if (amount) {
-            alert('동일한 상품이 장바구니에 있어 수량이 변경되었습니다.');
-          }
-          return { items: { ...state.items, [newItem.id]: newItem.amount + (amount || 0) } };
+          const itemIds = [...state.itemIds, newItem.id];
+          return { items: { ...state.items, [newItem.id]: newItem.amount }, itemIds };
+        });
+      },
+
+      updateItem: (item: CartStorageItem) => {
+        set((state) => {
+          const amount = state.items[item.id];
+          return { items: { ...state.items, [item.id]: item.amount + amount } };
         });
       },
 
@@ -56,7 +71,8 @@ export const cartStore = create<CartStore>()(
           idList.forEach((id: string) => {
             delete items[parseInt(id)];
           });
-          return { items };
+          const itemIds = state.itemIds.filter((id) => !idList.includes(id.toString()));
+          return { items, itemIds };
         });
       },
 

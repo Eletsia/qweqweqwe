@@ -11,16 +11,24 @@ import { Button } from '../ui/button';
  * ```tsx
  * <AddCartButton {...someItem} />
  * ```
- * 파라미터 item은 CartStorageItem 타입만 지켜서 넣어주시면 됩니다.
+ * - 파라미터 item은 CartStorageItem 타입만 지켜서 넣어주시면 됩니다.
  */
 export const AddCartButton = (item: CartStorageItem) => {
   const addItem = cartStore((state) => state.addItem);
+  const updateItem = cartStore((state) => state.updateItem);
+  const itemIds = cartStore((state) => state.itemIds);
 
   /**
    * 장바구니 추가 핸들러 함수
+   * - 이미 아이템이 있을 경우 updateItem, 없는 경우 addItem를 사용합니다.
    */
   const handleAddItemToCart = (item: CartStorageItem) => {
-    addItem(item);
+    if (itemIds.includes(item.id)) {
+      alert('동일한 상품이 장바구니에 있어 수량이 변경됩니다.');
+      updateItem(item);
+    } else {
+      addItem(item);
+    }
   };
 
   return <Button onClick={() => handleAddItemToCart(item)}>장바구니 추가</Button>;

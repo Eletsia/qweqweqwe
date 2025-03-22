@@ -1,21 +1,26 @@
-import { CartItem } from '@/types/cartType';
+'use client';
+
+import { Item } from '@/types/cartType';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { formatNumber } from '@/utils/formatNumber';
+import { cartStore } from '@/store/cartStore';
 
 type CartTotalProps = {
-  items: CartItem[];
+  items: Item[];
 };
 
 /**
  * 선택한 아이템의 총 수량, 총 금액을 나타내는 컴포넌트
- * @param CartTotalProps.items - 체크박스로 선택한 아이템 리스트
+ * @param CartTotalProps.items - 체크박스로 선택한 아이템 리스트 (수량 포함 X)
  */
 export const CartTotal = ({ items }: CartTotalProps) => {
+  const storeItems = cartStore((state) => state.items);
+
   const total = items.reduce(
     (result, item) => {
-      result.amount += item.amount;
-      result.price += item.amount * item.item.price;
+      result.amount += storeItems[item.id];
+      result.price += storeItems[item.id] * item.price;
       return result;
     },
     { amount: 0, price: 0 },

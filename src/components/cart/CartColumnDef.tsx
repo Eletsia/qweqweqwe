@@ -1,4 +1,4 @@
-import { CartItem } from '@/types/cartType';
+import { Item } from '@/types/cartType';
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '../ui/checkbox';
 import Image from 'next/image';
@@ -7,10 +7,8 @@ import { AmountControlButton } from './AmountControlButton';
 import { cartStore } from '@/store/cartStore';
 import Link from 'next/link';
 
-/**
- * 장바구니 테이블 컬럼 데이터
- */
-export const cartColumns: ColumnDef<CartItem>[] = [
+/** 장바구니 테이블 컬럼 데이터 */
+export const cartColumns: ColumnDef<Item>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -40,17 +38,17 @@ export const cartColumns: ColumnDef<CartItem>[] = [
       const item = row.original;
 
       return (
-        <Link href={`/detail/${item.item.id}`} className="flex flex-row gap-2 py-5">
+        <Link href={`/detail/${item.id}`} className="flex flex-row gap-2 py-5">
           <Image
-            src={item.item.thumbnail}
+            src={item.thumbnail}
             alt=""
             width={100}
             height={100}
             className="rounded-xl bg-gray-300"
           />
           <div className="flex max-h-[100px] flex-col items-start gap-2 p-1">
-            <h3 className="truncate font-bold">{item.item.title}</h3>
-            <p className="line-clamp-3 overflow-hidden text-gray-500">{item.item.content}</p>
+            <h3 className="truncate font-bold">{item.title}</h3>
+            <p className="line-clamp-3 overflow-hidden text-gray-500">{item.content}</p>
           </div>
         </Link>
       );
@@ -63,9 +61,7 @@ export const cartColumns: ColumnDef<CartItem>[] = [
       const item = row.original;
 
       return (
-        <div className="whitespace-nowrap px-5 font-semibold">
-          {formatNumber(item.item.price)}원
-        </div>
+        <div className="whitespace-nowrap px-5 font-semibold">{formatNumber(item.price)}원</div>
       );
     },
   },
@@ -74,28 +70,30 @@ export const cartColumns: ColumnDef<CartItem>[] = [
     header: '수량',
     cell: ({ row }) => {
       const item = row.original;
+      const storeItems = cartStore((state) => state.items);
       const increment = cartStore((state) => state.increment);
       const decrement = cartStore((state) => state.decrement);
+      const amount = storeItems[item.id];
 
       /**
        * [+] 버튼 함수 핸들러
        */
       const handleUpAmount = () => {
-        increment(item.item.id);
+        increment(item.id);
       };
 
       /**
        * [-] 버튼 함수 핸들러
        */
       const handleDownAmount = () => {
-        if (item.amount <= 1) return;
-        decrement(item.item.id);
+        if (amount <= 1) return;
+        decrement(item.id);
       };
 
       return (
         <div className="px-5">
           <AmountControlButton
-            amount={item.amount}
+            amount={amount}
             handleUpAmount={handleUpAmount}
             handleDownAmount={handleDownAmount}
           />
@@ -108,10 +106,12 @@ export const cartColumns: ColumnDef<CartItem>[] = [
     header: '합계',
     cell: ({ row }) => {
       const item = row.original;
+      const storeItems = cartStore((state) => state.items);
+      const amount = storeItems[item.id];
 
       return (
         <div className="whitespace-nowrap px-5 font-semibold">
-          {formatNumber(item.item.price * item.amount)}원
+          {formatNumber(item.price * amount)}원
         </div>
       );
     },

@@ -1,32 +1,36 @@
 'use client';
 
-import { CartItem } from '@/types/cartType';
+import { Item } from '@/types/cartType';
 import { cartStore } from '@/store/cartStore';
 import { cartColumns } from './CartColumnDef';
 import { DataTable } from './CartDataTable';
+import { useEffect, useState } from 'react';
+import { getItemDetails } from '@/api/itemApi';
 
-/**
- * 장바구니 아이템 리스트 컴포넌트
- */
+/** 장바구니 아이템 리스트 컴포넌트 */
 export const ItemCardList = () => {
-  const items = cartStore((state) => state.items);
+  const itemIds = cartStore((state) => state.itemIds);
+  const [cartItems, setCartItems] = useState<Item[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // TODO : 객체를 순회하면서 DB에서 아이템에 대한 정보 가져오기
-  // 변환하는 로직 추가 예정이며 아래 간단한 배열 변환 로직으로 대체합니다.
-  const sampleItems: CartItem[] = Object.entries(items).map(([key, value]: [string, number]) => {
-    const item = {
-      id: parseInt(key),
-      sellerId: 2,
-      title: '아이템 이름',
-      content:
-        '아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다. 아이템에 대한 설명입니다.',
-      price: 10000,
-      stock: 3,
-      thumbnail: '',
+  // 아이템 종류가 달라질 때만 새로 업데이트
+  useEffect(() => {
+    const getItemDetailList = async () => {
+      try {
+        setIsLoading(true);
+        const items: Item[] = await getItemDetails(itemIds);
+        setCartItems(items);
+      } catch (error) {
+        console.error('데이터를 가져오는데 실패했습니다.', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    const amount = value;
-    return { item, amount };
-  });
 
-  return <DataTable columns={cartColumns} data={sampleItems} />;
+    getItemDetailList();
+  }, [itemIds]);
+
+  if (!cartItems || isLoading) return <div className="p-5 text-gray-500">로딩중입니다...</div>;
+
+  return <DataTable columns={cartColumns} data={cartItems} />;
 };

@@ -18,19 +18,19 @@ import {
 } from '@/components/ui/table';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-import { CartItem } from '@/types/cartType';
+import { Item } from '@/types/cartType';
 import { cartStore } from '@/store/cartStore';
 import { CartTotal } from './CartTotal';
 
 interface DataTableProps {
-  columns: ColumnDef<CartItem>[];
-  data: CartItem[];
+  columns: ColumnDef<Item>[];
+  data: Item[];
 }
 
 /**
  * 데이터 테이블 컴포넌트
  * @param DataTableProps.columns - 장바구니 컬럼 데이터
- * @param DataTableProps.data - 아이템 리스트
+ * @param DataTableProps.data - 아이템 리스트 (수량 포함 X)
  */
 export function DataTable({ columns, data }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -40,21 +40,19 @@ export function DataTable({ columns, data }: DataTableProps) {
   useEffect(() => {
     const allSelected: RowSelectionState = {};
     data.forEach((row) => {
-      allSelected[row.item.id] = true;
+      allSelected[row.id] = true;
     });
     setRowSelection(allSelected);
   }, [data]);
 
-  /**
-   * 테이블 인스턴스
-   */
+  /** 테이블 인스턴스 */
   const table = useReactTable({
     data,
     columns,
     state: {
       rowSelection,
     },
-    getRowId: (row) => row.item.id.toString(),
+    getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
@@ -78,7 +76,7 @@ export function DataTable({ columns, data }: DataTableProps) {
    * 체크박스로 선택한 아이템 리스트를 반환하는 함수
    * @returns 선택한 아이템 리스트
    */
-  const getSelectedRowsOriginal = (): CartItem[] => {
+  const getSelectedRowsOriginal = (): Item[] => {
     return table.getSelectedRowModel().rows.map((row) => row.original);
   };
 
