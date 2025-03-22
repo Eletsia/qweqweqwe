@@ -16,7 +16,11 @@ export const Header = () => {
   return (
     <header className="flex justify-between items-center px-4 py-2 border-b">
       <Link href="/">
-        <img src="/images/logo.svg" alt="Pick n Click Logo" className="h-10" />
+        <img
+          src="/images/logo.svg"
+          alt="Pick n Click Logo"
+          className="h-10"
+        />
       </Link>
 
       <nav className="flex items-center gap-4 text-sm">

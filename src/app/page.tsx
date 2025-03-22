@@ -1,7 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import supabase from '@/services/supabase';
 import {
   Card,
   CardHeader,
@@ -9,49 +10,54 @@ import {
   CardContent,
 } from '@/components/ui/card';
 
-const items = [
-  {
-    item_id: 1,
-    title: '화이트 셔츠',
-    content: '기본 화이트 셔츠입니다.',
-    thumbnail: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSq-BDRcBOdlD02BwYzEWjn00M9JwV5oBmYJwCdw-JIlYj9Pe96H_NF-PjGyVamvp1DxldLGBe-uXIVBj9xhBybT0hhthcA_eVGk1MyEvketNWwXW8UjFCwMR2fg3lKhLB1Hg&usqp=CAc.jpg',
-    price: 39900,
-  },
-  {
-    item_id: 2,
-    title: '블랙 팬츠',
-    content: '세련된 블랙 팬츠입니다.',
-    thumbnail: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTjIGsTwIfN6pPdm1kfoK0awT3Ci3XhWVEuY6OcE20CtE-j24mDWolvyUpU0Yy_rgVDPZUZN4QO5X9RO0ZvOL94fwMm6pn64xzGGLXAbHxms5gvm97mV6oDiFZEmCFHMMeb7g&usqp=CAc',
-    price: 45900,
-  },
-  {
-    item_id: 3,
-    title: '청바지',
-    content: '편안한 청바지입니다.',
-    thumbnail: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSE7ctagxWYtju44NqVqxQLUc_892rUGuaFvIkBTqVqaQEoFoUuFIWdiPvey6SWoKhLT0nUQtKbAvS1L3hBhrbOV7eoqUJsEQeUpDcMbydq7Djm04sRrg&usqp=CAc',
-    price: 42390,
-  },
-];
+interface Item {
+  item_id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  price: number;
+}
 
 export default function HomePage() {
   const router = useRouter();
+  const [items, setItems] = useState<Item[]>([]);
+
+  useEffect(() => {
+    // Supabase에서 상품 데이터 불러오기
+    const fetchItems = async () => {
+      const { data, error } = await supabase.from('items').select('*');
+      console.log('받아온 데이터:', data);
+      if (error) {
+        console.error('상품 불러오기 실패:', error.message);
+        return;
+      }
+      setItems(data || []);
+    };
+
+    fetchItems();
+  }, []);
 
   return (
-    <main className="p-4 max-w-6xl mx-auto">
-      <h1 className="text-xl font-semibold mb-4">전체 상품</h1>
+    <main className="p-4 max-w-4xl mx-auto">
+      <h1 className="text-lg font-bold mb-4">전체 상품</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {items.map((item) => (
           <Card
             key={item.item_id}
-            className="border cursor-pointer"
-            onClick={() => router.push(`/detail/${item.item_id}`)}
+            className="cursor-pointer"
+            onClick={() => router.push(`/detail/${item.item_id}`)} // 클릭 시 상세 페이지로 이동
           >
             <CardHeader>
-              <img src={item.thumbnail} alt={item.title} className="w-full h-auto max-h-40 object-cover" />
-              <CardTitle className="mt-2 text-base">{item.title}</CardTitle>
+              {/* 상품 썸네일 이미지 */}
+              <img
+                src={item.thumbnail}
+                alt={item.title}
+                className="w-full h-40 object-cover rounded"
+              />
+              <CardTitle className="text-base mt-2">{item.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-700 mb-1">{item.content}</p>
+              <p className="text-sm text-gray-700">{item.content}</p>
               <p className="text-sm text-gray-500">{item.price.toLocaleString()}원</p>
             </CardContent>
           </Card>
