@@ -1,19 +1,9 @@
 'use client';
 
 import { CartItem } from '@/types/cartType';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '../ui/table';
-import { ItemCard } from './ItemCard';
 import { cartStore } from '@/store/cartStore';
-
-/**
- * 장바구니 아이템 리스트를 보여주는 테이블 컴포넌트
- */
-const CART_TABLE_HEADERS = [
-  { id: 'product', label: '상품' },
-  { id: 'price', label: '가격' },
-  { id: 'quantity', label: '수량' },
-  { id: 'total', label: '합계' },
-];
+import { DataTable } from '../shop-manage/data-table';
+import { cartColumns } from './CartColumnDef';
 
 export const ItemCardList = () => {
   const items = cartStore((state) => state.items);
@@ -35,24 +25,5 @@ export const ItemCardList = () => {
     return { item, amount };
   });
 
-  return (
-    <div className="max-w-[1000px]">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {CART_TABLE_HEADERS.map((header) => (
-              <TableHead key={header.id} className="text-center">
-                {header.label}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        {sampleItems.map((item) => (
-          <TableBody key={item.item.id}>
-            <ItemCard cartItem={item} />
-          </TableBody>
-        ))}
-      </Table>
-    </div>
-  );
+  return <DataTable columns={cartColumns} data={sampleItems} />;
 };
