@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import supabase from '@/services/supabase';
 import { ImageSlider } from '@/components/detail/ImageSlider';
+import { AddCartButton } from '@/components/cart/AddCartButton';
 
 interface Item {
   title: string;
@@ -49,17 +50,22 @@ export default function DetailPage() {
     }
   })();
 
-  if (isLoading) return <p className="text-center mt-10">상품 정보를 불러오는 중...</p>;
-  if (isError) return <p className="text-center mt-10 text-red-500">에러: {(error as Error).message}</p>;
+  if (isLoading) return <p className="mt-10 text-center">상품 정보를 불러오는 중...</p>;
+  if (isError)
+    return <p className="mt-10 text-center text-red-500">에러: {(error as Error).message}</p>;
 
   return (
-    <main className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">{item!.title}</h1>
+    <main className="mx-auto max-w-3xl p-4 pt-20">
+      <h1 className="mb-4 text-2xl font-bold">{item!.title}</h1>
 
       <ImageSlider images={images} />
 
-      <p className="text-gray-700 text-base mb-2">{item!.content}</p>
-      <p className="text-lg font-semibold">{item!.price.toLocaleString()}원</p>
+      <p className="mb-2 text-base text-gray-700">{item!.content}</p>
+      <p className="mt-3 text-lg font-semibold">{item!.price.toLocaleString()}원</p>
+
+      <div className="mt-4">
+        <AddCartButton id={Number(item_id)} amount={1} />
+      </div>
     </main>
   );
 }
