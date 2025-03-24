@@ -4,6 +4,10 @@ import supabase from '@/services/supabase';
 //@return 해당 유저의 uid 와 일치하는 wishes 내용 전부
 export const getWishesByUserId = async (id: string) => {
   const { data, error, status } = await supabase.from('wishes').select('*').eq('uid', id);
+  if (error) {
+    console.error('getWishesByUserId', error);
+    return;
+  }
   return data;
 };
 
@@ -15,6 +19,10 @@ export const getWishesByUsernItemId = async (id: string, item_id: number) => {
     .select('*')
     .eq('uid', id)
     .eq('item_id', item_id);
+  if (error) {
+    console.error('getWishesByUsernItemId', error);
+    return;
+  }
   return data;
 };
 
