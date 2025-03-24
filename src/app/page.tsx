@@ -38,7 +38,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="p-4 max-w-4xl mx-auto">
+    <main className="p-4 max-w-4xl mx-auto pt-20">
       <h1 className="text-lg font-bold mb-4">전체 상품</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {items.map((item) => (

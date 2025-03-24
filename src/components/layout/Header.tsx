@@ -14,7 +14,8 @@ export const Header = () => {
   };
 
   return (
-    <header className="flex justify-between items-center px-4 py-2 border-b">
+    <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md border-b">
+    <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-2">
       <Link href="/">
         <img
           src="/images/logo.svg"
@@ -22,7 +23,7 @@ export const Header = () => {
           className="h-10"
         />
       </Link>
-
+  
       <nav className="flex items-center gap-4 text-sm">
         <Link href="/cart">장바구니</Link>
         {user ? (
@@ -37,6 +38,6 @@ export const Header = () => {
           </>
         )}
       </nav>
-    </header>
-  );
-};
+    </div>
+  </header>
+  )}
