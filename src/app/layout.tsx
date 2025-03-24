@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import Providers from './providers';
+import AuthListener from '@/components/AuthListener';
 
 export const metadata: Metadata = {
   title: 'Pick n Click',
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
+        <AuthListener />
         <Header />
         <Providers><main>{children}</main></Providers>
       </body>
