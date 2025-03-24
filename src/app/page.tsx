@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import supabase from '@/services/supabase';
 import {
@@ -18,24 +18,33 @@ interface Item {
   price: number;
 }
 
+async function fetchItems(): Promise<Item[]> {
+  const { data, error } = await supabase.from('items').select('*');
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data || [];
+}
+
 export default function HomePage() {
   const router = useRouter();
-  const [items, setItems] = useState<Item[]>([]);
 
-  useEffect(() => {
-    // Supabase에서 상품 데이터 불러오기
-    const fetchItems = async () => {
-      const { data, error } = await supabase.from('items').select('*');
-      console.log('받아온 데이터:', data);
-      if (error) {
-        console.error('상품 불러오기 실패:', error.message);
-        return;
-      }
-      setItems(data || []);
-    };
+  const { data: items = [], isLoading, isError, error } = useQuery<Item[]>({
+    queryKey: ['items'],
+    queryFn: fetchItems,
+  });
 
-    fetchItems();
-  }, []);
+  if (isLoading) {
+    return <p className="text-center mt-10">상품 불러오는 중...</p>;
+  }
+
+  if (isError) {
+    return (
+      <p className="text-center mt-10 text-red-500">
+        에러 발생: {(error as Error).message}
+      </p>
+    );
+  }
 
   return (
     <main className="p-4 max-w-4xl mx-auto pt-20">
@@ -45,10 +54,9 @@ export default function HomePage() {
           <Card
             key={item.item_id}
             className="cursor-pointer"
-            onClick={() => router.push(`/detail/${item.item_id}`)} // 클릭 시 상세 페이지로 이동
+            onClick={() => router.push(`/detail/${item.item_id}`)}
           >
             <CardHeader>
-              {/* 상품 썸네일 이미지 */}
               <img
                 src={item.thumbnail}
                 alt={item.title}
@@ -58,7 +66,9 @@ export default function HomePage() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-700">{item.content}</p>
-              <p className="text-sm text-gray-500">{item.price.toLocaleString()}원</p>
+              <p className="text-sm text-gray-500">
+                {item.price.toLocaleString()}원
+              </p>
             </CardContent>
           </Card>
         ))}
