@@ -5,6 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 import supabase from '@/services/supabase';
 import { ImageSlider } from '@/components/detail/ImageSlider';
 import { AddCartButton } from '@/components/cart/AddCartButton';
+import {Loading} from '@/components/detail/Loading'; // 로딩 컴포넌트
+import {Error2} from '@/components/detail/Error'; 
 import {Item} from "@/types/type"
 
 // 특정 상품을 Supabase에서 가져오는 함수
@@ -45,9 +47,11 @@ export default function DetailPage() {
     }
   })();
 
-  if (isLoading) return <p className="mt-10 text-center">상품 정보를 불러오는 중...</p>;
-  if (isError)
-    return <p className="mt-10 text-center text-red-500">에러: {(error as Error).message}</p>;
+  // 로딩 상태 처리
+  if (isLoading) return <Loading />;
+  // 에러 상태 처리
+  if (isError) return <Error2 message={(error as Error).message} />;
+
 
   return (
     <main className="mx-auto max-w-6xl p-4 pt-20">
