@@ -3,20 +3,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import supabase from '@/services/supabase';
+import { Item } from '@/types/type';
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
 } from '@/components/ui/card';
-
-interface Item {
-  item_id: number;
-  title: string;
-  content: string;
-  thumbnail: string;
-  price: number;
-}
 
 async function fetchItems(): Promise<Item[]> {
   const { data, error } = await supabase.from('items').select('*');
