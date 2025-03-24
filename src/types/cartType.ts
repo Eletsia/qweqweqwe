@@ -9,6 +9,8 @@ export type Item = {
   thumbnail: string;
   stock: number;
   price: number;
+  img_list?: string; // JSON 문자열
+  item_id: number;
 };
 
 /**
