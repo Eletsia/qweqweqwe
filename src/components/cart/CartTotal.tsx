@@ -19,8 +19,8 @@ export const CartTotal = ({ items }: CartTotalProps) => {
 
   const total = items.reduce(
     (result, item) => {
-      result.amount += storeItems[item.id];
-      result.price += storeItems[item.id] * item.price;
+      result.amount += storeItems[item.item_id];
+      result.price += storeItems[item.item_id] * item.price;
       return result;
     },
     { amount: 0, price: 0 },

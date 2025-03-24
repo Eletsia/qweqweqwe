@@ -1,25 +1,25 @@
-import { CartStorageItem, Item } from '@/types/cartType';
+import { CartItem, Item } from '@/types/cartType';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
 type CartStore = {
   /** 현재 저장된 장바구니 목록 */
-  items: { [key: Item['id']]: number };
+  items: { [key: Item['item_id']]: number };
 
   /** 현재 저장된 아이템 id 목록 */
-  itemIds: number[];
+  itemIds: number[] | null;
 
   /**
    * 장바구니에 새로운 아이템 추가
    * @param newItem - 새로운 아이템
    */
-  addItem: (newItem: CartStorageItem) => void;
+  addItem: (newItem: CartItem) => void;
 
   /**
    * 장바구니 아이템 수량 업데이트
    * @param item - 업데이트할 아이템
    */
-  updateItem: (item: CartStorageItem) => void;
+  updateItem: (item: CartItem) => void;
 
   /**
    * 장바구니에서 아이템 삭제
@@ -49,16 +49,16 @@ export const cartStore = create<CartStore>()(
     (set) => ({
       items: {},
 
-      itemIds: [],
+      itemIds: null,
 
-      addItem: (newItem: CartStorageItem) => {
+      addItem: (newItem: CartItem) => {
         set((state) => {
-          const itemIds = [...state.itemIds, newItem.id];
+          const itemIds = state.itemIds ? [...state.itemIds, newItem.id] : [newItem.id];
           return { items: { ...state.items, [newItem.id]: newItem.amount }, itemIds };
         });
       },
 
-      updateItem: (item: CartStorageItem) => {
+      updateItem: (item: CartItem) => {
         set((state) => {
           const amount = state.items[item.id];
           return { items: { ...state.items, [item.id]: item.amount + amount } };
@@ -71,7 +71,7 @@ export const cartStore = create<CartStore>()(
           idList.forEach((id: string) => {
             delete items[parseInt(id)];
           });
-          const itemIds = state.itemIds.filter((id) => !idList.includes(id.toString()));
+          const itemIds = state.itemIds?.filter((id) => !idList.includes(id.toString()));
           return { items, itemIds };
         });
       },
@@ -100,7 +100,6 @@ export const cartStore = create<CartStore>()(
     }),
     {
       name: 'cart-storage',
-      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

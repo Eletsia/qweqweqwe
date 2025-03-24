@@ -40,7 +40,7 @@ export function DataTable({ columns, data }: DataTableProps) {
   useEffect(() => {
     const allSelected: RowSelectionState = {};
     data.forEach((row) => {
-      allSelected[row.id] = true;
+      allSelected[row.item_id] = true;
     });
     setRowSelection(allSelected);
   }, [data]);
@@ -52,7 +52,7 @@ export function DataTable({ columns, data }: DataTableProps) {
     state: {
       rowSelection,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row.item_id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
@@ -82,52 +82,42 @@ export function DataTable({ columns, data }: DataTableProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      {table.getRowModel().rows?.length === 0 ? (
-        <div className="p-5 text-gray-500">장바구니가 비어있습니다.</div>
-      ) : (
-        <>
-          <Button onClick={handleClickDelete} className="self-start p-3 text-xs font-semibold">
-            선택 삭제
-          </Button>
-          <div className="space-y-4">
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => {
-                        return (
-                          <TableHead
-                            className="text-center"
-                            key={header.id}
-                            colSpan={header.colSpan}
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(header.column.columnDef.header, header.getContext())}
-                          </TableHead>
-                        );
-                      })}
-                    </TableRow>
+      <Button onClick={handleClickDelete} className="self-start p-3 text-xs font-semibold">
+        선택 삭제
+      </Button>
+      <div className="space-y-4">
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead className="text-center" key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
                   ))}
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </div>
-          <CartTotal items={getSelectedRowsOriginal()} />
-        </>
-      )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+      <CartTotal items={getSelectedRowsOriginal()} />
     </div>
   );
 }

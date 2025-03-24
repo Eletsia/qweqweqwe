@@ -32,20 +32,14 @@ export const cartColumns: ColumnDef<Item>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'product',
+    id: 'product',
     header: '상품',
     cell: ({ row }) => {
       const item = row.original;
 
       return (
-        <Link href={`/detail/${item.id}`} className="flex flex-row gap-2 py-5">
-          <Image
-            src={item.thumbnail}
-            alt=""
-            width={100}
-            height={100}
-            className="rounded-xl bg-gray-300"
-          />
+        <Link href={`/detail/${item.item_id}`} className="flex flex-row gap-2 py-5">
+          <Image src="" alt="" width={100} height={100} className="rounded-xl bg-gray-300" />
           <div className="flex max-h-[100px] flex-col items-start gap-2 p-1">
             <h3 className="truncate font-bold">{item.title}</h3>
             <p className="line-clamp-3 overflow-hidden text-gray-500">{item.content}</p>
@@ -55,7 +49,7 @@ export const cartColumns: ColumnDef<Item>[] = [
     },
   },
   {
-    accessorKey: 'price',
+    id: 'price',
     header: '가격',
     cell: ({ row }) => {
       const item = row.original;
@@ -66,20 +60,20 @@ export const cartColumns: ColumnDef<Item>[] = [
     },
   },
   {
-    accessorKey: 'amount',
+    id: 'amount',
     header: '수량',
     cell: ({ row }) => {
       const item = row.original;
       const storeItems = cartStore((state) => state.items);
       const increment = cartStore((state) => state.increment);
       const decrement = cartStore((state) => state.decrement);
-      const amount = storeItems[item.id];
+      const amount = storeItems[item.item_id];
 
       /**
        * [+] 버튼 함수 핸들러
        */
       const handleUpAmount = () => {
-        increment(item.id);
+        increment(item.item_id);
       };
 
       /**
@@ -87,7 +81,7 @@ export const cartColumns: ColumnDef<Item>[] = [
        */
       const handleDownAmount = () => {
         if (amount <= 1) return;
-        decrement(item.id);
+        decrement(item.item_id);
       };
 
       return (
@@ -107,7 +101,7 @@ export const cartColumns: ColumnDef<Item>[] = [
     cell: ({ row }) => {
       const item = row.original;
       const storeItems = cartStore((state) => state.items);
-      const amount = storeItems[item.id];
+      const amount = storeItems[item.item_id];
 
       return (
         <div className="whitespace-nowrap px-5 font-semibold">
