@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: 'Pick n Click',
@@ -16,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`antialiased`}>
         <Header />
-        <main>{children}</main>
+        <Providers><main>{children}</main></Providers>
       </body>
     </html>
   );
