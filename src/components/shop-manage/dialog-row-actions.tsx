@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -17,23 +17,59 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { MoreHorizontal } from 'lucide-react';
-import type { Payment } from '@/app/shop-manage/columns'; // 경로 맞게 수정
+import type { Payment } from '@/app/shop-manage/columns';
+
+import { useState } from 'react';
+import { deleteItem, updateItem } from '@/api/itemsApi';
 
 type Props = {
   payment: Payment;
   onUpdate: (updated: Payment) => void;
+  onDelete: (id: string) => void;
 };
 
-export function DialogRowActions({ payment, onUpdate }: Props) {
-  const [status, setStatus] = useState<'판매중' | '판매중지' | '품절'>(payment.status);
+export function DialogRowActions({ payment, onUpdate, onDelete }: Props) {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const stock = Number(formData.get('stock'));
+    const updated: Payment = {
+      id: payment.id,
+      title: formData.get('title') as string,
+      price: Number(formData.get('price')),
+      stock,
+      status: stock > 0 ? '판매중' : '품절',
+    };
+
+    try {
+      setLoading(true);
+      await updateItem(payment.id, {
+        title: updated.title,
+        price: updated.price,
+        stock: updated.stock,
+      });
+      onUpdate(updated);
+    } catch (err) {
+      console.error('수정 실패:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      await deleteItem(payment.id);
+      onDelete(payment.id);
+    } catch (err) {
+      console.error('삭제 실패:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Dialog>
@@ -52,63 +88,32 @@ export function DialogRowActions({ payment, onUpdate }: Props) {
               </Button>
             </DialogTrigger>
           </DropdownMenuItem>
-          <DropdownMenuItem>삭제</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDelete}>삭제</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
       <DialogContent>
         <DialogHeader>
           <DialogTitle>상품 수정</DialogTitle>
+          <DialogDescription>상품 정보를 수정한 후 저장하세요.</DialogDescription>
         </DialogHeader>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            const updated: Payment = {
-              id: payment.id,
-              title: formData.get('title') as string,
-              price: Number(formData.get('price')),
-              stock: Number(formData.get('stock')),
-              status,
-            };
-            onUpdate(updated);
-          }}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-sm font-medium">상품명</label>
             <Input name="title" defaultValue={payment.title} />
           </div>
-
           <div>
             <label className="text-sm font-medium">가격</label>
             <Input name="price" type="number" defaultValue={payment.price} />
           </div>
-
           <div>
             <label className="text-sm font-medium">재고</label>
             <Input name="stock" type="number" defaultValue={payment.stock} />
           </div>
-
-          <div>
-            <label className="text-sm font-medium">상태</label>
-            <Select
-              value={status}
-              onValueChange={(value) => setStatus(value as '판매중' | '판매중지' | '품절')}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="판매중">판매중</SelectItem>
-                <SelectItem value="판매중지">판매중지</SelectItem>
-                <SelectItem value="품절">품절</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <DialogFooter>
-            <Button type="submit">저장</Button>
+            <Button type="submit" disabled={loading}>
+              저장
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
