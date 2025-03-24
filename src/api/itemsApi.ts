@@ -18,13 +18,17 @@ export const getItemsBySellerId = async (id: number) => {
     `,
     )
     .eq('seller_id', id);
+  if (error) {
+    console.error('getItemBySellerId', error);
+    return;
+  }
   return data;
 };
 //@param id 상품의 id 값
 //@return 해당 상품에 대한 정보만 가져옴
 export const getItemById = async (id: number) => {
   const { data, error, status } = await supabase.from('items').select('*').eq('item_id', id);
-
+  if (error) console.error('getItemById', error);
   return data;
 };
 
@@ -32,6 +36,10 @@ export const getItemById = async (id: number) => {
 //@return 추가된 item 데이터 값
 export const addItem = async (item: Item) => {
   const { data, error, status } = await supabase.from('items').insert([item]).select();
+  if (error) {
+    console.error('addItem', error);
+    return;
+  }
   return data;
 };
 
@@ -39,6 +47,10 @@ export const addItem = async (item: Item) => {
 //@return 업데이트된 item 데이터 값
 export const updateItem = async (item: Item) => {
   const { data, error, status } = await supabase.from('items').upsert([item]).select();
+  if (error) {
+    console.error('updateItem', error);
+    return;
+  }
   return data;
 };
 
@@ -46,5 +58,9 @@ export const updateItem = async (item: Item) => {
 //@return 삭제 결과
 export const deleteItem = async (id: number) => {
   const { data, error, status } = await supabase.from('items').delete().eq('item_id', id);
+  if (error) {
+    console.error('deleteItem', error);
+    return;
+  }
   return data;
 };
