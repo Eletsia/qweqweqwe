@@ -19,7 +19,9 @@ export default function RootLayout({
       <body className={`antialiased`}>
         <AuthListener />
         <Header />
-        <Providers><main>{children}</main></Providers>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );
