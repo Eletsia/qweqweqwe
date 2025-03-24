@@ -1,3 +1,5 @@
+//app/shop-manage/columns.tsx
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -8,12 +10,15 @@ import { DialogRowActions } from '@/components/shop-manage/dialog-row-actions';
 export type Payment = {
   id: string;
   stock: number;
-  status: '판매중' | '판매중지' | '품절';
+  status: '판매중' | '품절';
   title: string;
   price: number;
 };
 
-export const createColumns = (onUpdate: (updated: Payment) => void): ColumnDef<Payment>[] => [
+export const createColumns = (
+  onUpdate: (updated: Payment) => void,
+  onDelete: (id: string) => void,
+): ColumnDef<Payment>[] => [
   {
     accessorKey: 'status',
     cell: ({ row }) => <div className="min-w-16 lowercase">{row.getValue('status')}</div>,
@@ -39,6 +44,8 @@ export const createColumns = (onUpdate: (updated: Payment) => void): ColumnDef<P
   {
     id: 'actions',
     header: ' ',
-    cell: ({ row }) => <DialogRowActions payment={row.original} onUpdate={onUpdate} />,
+    cell: ({ row }) => (
+      <DialogRowActions payment={row.original} onUpdate={onUpdate} onDelete={onDelete} />
+    ),
   },
 ];
