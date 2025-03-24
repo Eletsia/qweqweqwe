@@ -22,9 +22,6 @@ export default function MyPage() {
       { id: 1, src: '/review1.jpg' },
       { id: 2, src: '/review2.jpg' },
       { id: 3, src: '/review3.jpg' },
-      { id: 3, src: '/review3.jpg' },
-      { id: 3, src: '/review3.jpg' },
-      { id: 3, src: '/review3.jpg' },
     ],
     reviews_unwritten: [
       { id: 1, src: '/review1.jpg' },

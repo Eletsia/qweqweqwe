@@ -24,11 +24,20 @@ export const getItemsBySellerId = async (id: number) => {
   }
   return data;
 };
+
 //@param id 상품의 id 값
 //@return 해당 상품에 대한 정보만 가져옴
 export const getItemById = async (id: number) => {
   const { data, error, status } = await supabase.from('items').select('*').eq('item_id', id);
   if (error) console.error('getItemById', error);
+  return data;
+};
+
+//@param id[] 가져올 상품의 id 배열 값
+//@return 일치하는 상품들의 정보 배열
+export const getItemsByIdArray = async (ids: number[]) => {
+  const { data, error, status } = await supabase.from('items').select('*').in('id', ids);
+  if (error) console.error('getItemByIdArray', error);
   return data;
 };
 
