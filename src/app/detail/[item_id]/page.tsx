@@ -7,7 +7,7 @@ import { ImageSlider } from '@/components/detail/ImageSlider';
 import { AddCartButton } from '@/components/cart/AddCartButton';
 import {Loading} from '@/components/detail/Loading'; // 로딩 컴포넌트
 import {Error2} from '@/components/detail/Error'; 
-import {Item} from "@/types/type"
+import {Item} from "@/types/cartType"
 
 // 특정 상품을 Supabase에서 가져오는 함수
 const fetchDetailItem = async (item_id: string | string[]): Promise<Item> => {
