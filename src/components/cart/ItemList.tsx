@@ -10,12 +10,8 @@ export const ItemCardList = () => {
   const itemIds = cartStore((state) => state.itemIds);
   const { data: cartItems, isPending, isError } = UseGetCart(itemIds);
 
-  if (itemIds === null) {
-    return <div>불러오는 중...</div>;
-  }
-
-  if (itemIds.length === 0) {
-    return <div>장바구니가 비어있습니다.</div>;
+  if (itemIds === null || itemIds.length === 0) {
+    return <div className="p-5 text-gray-500">장바구니가 비어있습니다.</div>;
   }
 
   if (isPending || isError) {
