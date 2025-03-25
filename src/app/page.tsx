@@ -8,6 +8,7 @@ import { Item } from '@/types/cartType';
 import { Loading } from '@/components/detail/Loading';
 import { Error2 } from '@/components/detail/Error';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Item } from '@/types/cartType';
 
 // Supabase에서 전체 상품 리스트를 불러오는 함수
 async function fetchItems(): Promise<Item[]> {

@@ -1,10 +1,10 @@
 'use client';
 
 import { Item } from '@/types/cartType';
-import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { formatNumber } from '@/utils/formatNumber';
 import { cartStore } from '@/store/cartStore';
+import { OrderButton } from './OrderButton';
 
 type CartTotalProps = {
   items: Item[];
@@ -17,6 +17,7 @@ type CartTotalProps = {
 export const CartTotal = ({ items }: CartTotalProps) => {
   const storeItems = cartStore((state) => state.items);
 
+  // 총 수량 및 금액 계산
   const total = items.reduce(
     (result, item) => {
       result.amount += storeItems[item.item_id];
@@ -25,6 +26,9 @@ export const CartTotal = ({ items }: CartTotalProps) => {
     },
     { amount: 0, price: 0 },
   );
+
+  // 선택된 아이템들의 id 배열 생성 (주문하기 버튼에 전달용)
+  const selectedItemIds = items.map((item) => item.item_id);
 
   return (
     <Card className="my-5 w-[300px] self-end">
@@ -40,7 +44,7 @@ export const CartTotal = ({ items }: CartTotalProps) => {
           <span className="text-gray-600">총 금액</span>
           <span className="font-bold">{formatNumber(total.price)}원</span>
         </div>
-        <Button className="mt-3 font-bold">주문하기</Button>
+        <OrderButton itemIds={selectedItemIds} />
       </CardContent>
     </Card>
   );

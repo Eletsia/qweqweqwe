@@ -8,8 +8,8 @@ import {
   LayoutDashboardIcon,
   ListIcon,
 } from 'lucide-react';
-import { NavMain } from '@/components/shop-manage/nav-main';
-import { NavUser } from '@/components/shop-manage/nav-user';
+import { NavMain } from '@/components/shop-manage/NavMain';
+import { NavUser } from '@/components/shop-manage/NavUser';
 import { Sidebar, SidebarContent, SidebarFooter } from '@/components/ui/sidebar';
 
 const data = {
