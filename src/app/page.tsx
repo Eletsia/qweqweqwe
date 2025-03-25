@@ -9,7 +9,7 @@ import { Loading } from '@/components/detail/Loading';
 import { Error2 } from '@/components/detail/Error';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Item } from '@/types/cartType';
-import WatchedItems from '@/components/WatchedItems';
+import RecentlyViewedSidebar from '@/components/RecentlyViewedSidebar';
 
 // Supabase에서 전체 상품 리스트를 불러오는 함수
 async function fetchItems(): Promise<Item[]> {
@@ -39,6 +39,13 @@ export default function HomePage() {
   //에러 상태 처리
   if (isError) return <Error2 message={(error as Error).message} />;
 
+  const handleItemClick = (item: Item) => {
+    const watchedItems = JSON.parse(localStorage.getItem('watchedItems') || '[]');
+    const updatedItems = [item, ...watchedItems.filter((i) => i.item_id !== item.item_id)];
+    localStorage.setItem('watchedItems', JSON.stringify(updatedItems));
+    router.push(`/detail/${item.item_id}`);
+  };
+
   return (
     <>
       <main className="mx-auto max-w-4xl p-4 pt-20">
@@ -50,7 +57,7 @@ export default function HomePage() {
             <Card
               key={item.item_id}
               className="cursor-pointer"
-              onClick={() => router.push(`/detail/${item.item_id}`)} // 동적 라우팅으로 상세 페이지로 이동
+              onClick={() => handleItemClick(item)} // 상세 페이지 이동 및 조회한 아이템 담기
             >
               <CardHeader>
                 {/* 상품 이미지 */}
@@ -75,7 +82,7 @@ export default function HomePage() {
           ))}
         </div>
       </main>
-      <WatchedItems />
+      <RecentlyViewedSidebar items={items} />
     </>
   );
 }
