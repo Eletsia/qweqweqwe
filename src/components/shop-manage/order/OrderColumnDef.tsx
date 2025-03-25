@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useUpdateOrderStatus } from '@/hooks/mutate/useUpdateStatus';
 
 /** 주문 상품 테이블 컬럼 데이터 */
 export const orderedColumns: ColumnDef<OrderedItem>[] = [
@@ -51,10 +52,10 @@ export const orderedColumns: ColumnDef<OrderedItem>[] = [
     cell: ({ row }) => {
       const item = row.original;
       const status: OrderStatus[] = ['pending', 'paid', 'shipped', 'delivered', 'cancelled'];
+      const { mutate: updateStatus } = useUpdateOrderStatus();
 
       const handleStatusChange = (value: OrderStatus) => {
-        // 상품 상태 변경 로직
-        console.log('value ➡️', value);
+        updateStatus({ orderId: item.order_id, status: value });
       };
 
       return (

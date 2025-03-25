@@ -25,17 +25,17 @@ const getSellerInfo = async (uid: string) => {
     .eq('uid', uid)
     .maybeSingle();
 
-  if (error) throw new Error('유저의 스토어 정보를 가져오는데 실패했습니다.');
+  if (error) throw new Error('유저의 스토어 정보를 가져오는 도중 오류가 발생했습니다.');
   return data;
 };
 
 // 아이템 목록 가져오기
 export const getOrderedItemsBySellerId = async (id: number) => {
-  const { data, error } = await supabase.rpc('get_seller_ordered_items_nested', {
+  const { data, error } = await supabase.rpc('get_ordered_items', {
     p_seller_id: id,
   });
 
-  if (error) throw new Error('상품 목록을 가져오는데 실패했습니다.');
+  if (error) throw new Error('상품 목록을 가져오는 도중 오류가 발생했습니다.');
 
   return data as OrderedItem[];
 };

@@ -13,6 +13,8 @@ const OrderPage = () => {
 
   if (isLoading) return <div>로딩중...</div>;
   if (isError) return <div>에러 발생</div>;
+  if (orderedItems && orderedItems.length === 0)
+    return <div className="p-5 text-gray-500">주문 목록이 비어있습니다.</div>;
 
   return (
     <SidebarInset>
