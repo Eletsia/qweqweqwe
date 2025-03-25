@@ -18,6 +18,14 @@ export type Orders = {
   items: Items;
   order_status: string;
 };
+export type Orders2 = {
+  order_id: number;
+  amount: number;
+  created_at: string;
+  item_id: number;
+  items: Items[];
+  order_status: string;
+};
 
 export type Items = {
   thumbnail: string;
