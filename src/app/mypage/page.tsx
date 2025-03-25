@@ -6,11 +6,17 @@ import { getOrderedItemsByBuyerId } from '@/api/orderedItemsApi';
 import { getReviewByUserId } from '@/api/reviewsApi';
 import { Profile } from './_components/Profile';
 import { StoreButton } from './_components/StoreButton';
-import { Orders, Reviews, TabContents } from './_types/type';
+import { Orders, Reviews, TabContents, User } from './_types/type';
 
 export default function MyPage() {
-  const [user, setUser] = useState<{ nickname: string; email: string; introduction: string }>();
-  const [selectedTab, setSelectedTab] = useState('orders');
+  const [user, setUser] = useState<User>({
+    nickname: '',
+    email: '',
+    introduction: '',
+  });
+  const [selectedTab, setSelectedTab] = useState<
+    'orders' | 'reviews_written' | 'reviews_unwritten'
+  >('orders');
   const userId = '5360358d-5de7-43f7-8998-58f02b79a46c';
 
   const [tabContents, setTabContents] = useState<TabContents>({
@@ -21,7 +27,11 @@ export default function MyPage() {
 
   useEffect(() => {
     async function fetchUsers() {
-      const data = await getUserInfo(userId);
+      const data: User = (await getUserInfo(userId)) || {
+        nickname: '',
+        email: '',
+        introduction: '',
+      };
       setUser(data);
     }
     fetchUsers();
