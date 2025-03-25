@@ -75,55 +75,112 @@ export default function RegisterForm() {
         <FormField
           control={form.control}
           name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>이메일</FormLabel>
-              <FormControl>
-                <Input placeholder="example@exam.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const error = form.formState.errors[field.name];
+            return (
+              <FormItem>
+                <FormLabel className="!text-black">이메일</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="example@exam.com"
+                    className={`${error ? '!focus:border-red-500 !border-red-500' : ''}`}
+                  />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={form.control}
           name="nickname"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>닉네임</FormLabel>
-              <FormControl>
-                <Input placeholder="최소 2자 이상 입력해 주세요." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const error = form.formState.errors[field.name];
+            return (
+              <FormItem>
+                <FormLabel className="!text-black">닉네임</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="최소 2자 이상 입력해 주세요."
+                    {...field}
+                    className={`${error ? '!focus:border-red-500 !border-red-500' : ''}`}
+                  />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={form.control}
           name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>비밀번호</FormLabel>
-              <FormControl>
-                <Input placeholder="최소 8자 이상 입력해 주세요." {...field} type="password" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const error = form.formState.errors[field.name];
+            return (
+              <FormItem>
+                <FormLabel className="!text-black">비밀번호</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="최소 8자 이상 입력해 주세요."
+                    {...field}
+                    type="password"
+                    className={`${error ? '!focus:border-red-500 !border-red-500' : ''}`}
+                  />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={form.control}
           name="passwordConfirm"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>비밀번호 확인</FormLabel>
-              <FormControl>
-                <Input {...field} type="password" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const error = form.formState.errors[field.name];
+            return (
+              <FormItem>
+                <FormLabel className="!text-black">비밀번호 확인</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    className={`${error ? '!focus:border-red-500 !border-red-500' : ''}`}
+                  />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
+        {/* 에러메세지 모아서 표시 */}
+        {Object.keys(form.formState.errors).length > 0 && (
+          <div className="text-sm text-red-500">
+            <ul className="list-inside list-disc">
+              {Object.entries(form.formState.errors).map(([fieldName, error]) => {
+                let label = '';
+                switch (fieldName) {
+                  case 'email':
+                    label = '이메일';
+                    break;
+                  case 'nickname':
+                    label = '닉네임';
+                    break;
+                  case 'password':
+                    label = '비밀번호';
+                    break;
+                  case 'passwordConfirm':
+                    label = '비밀번호 확인';
+                    break;
+                  default:
+                    label = fieldName;
+                }
+                return (
+                  <li key={fieldName}>
+                    <strong>{label}:</strong> {error.message}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+
         <Button type="submit">가입하기</Button>
       </form>
     </Form>
