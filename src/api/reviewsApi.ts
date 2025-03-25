@@ -12,7 +12,7 @@ export const getReviewsByItemId = async (id: number): Promise<Review[]> => {
     .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
-  return data ?? []; // ✅ null 대신 빈 배열 반환!
+  return data ?? []; // null 대신 빈 배열 반환!
 };
 
 //@param id user의 uid 정보

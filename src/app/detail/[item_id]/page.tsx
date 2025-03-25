@@ -74,6 +74,7 @@ export default function DetailPage() {
           <AddCartButton id={Number(item_id)} amount={1} />
         </div>
       </div>
+      {/* 리뷰 목록 렌더링 */}
       <ReviewList itemId={Number(item_id)} />
     </main>
   );
