@@ -26,10 +26,10 @@ export default function MyPage() {
     reviews_written: [],
     reviews_unwritten: [],
   });
-  const convertOrders2ToOrders = (orders2: Orders2[]): Orders[] => {
+  const convertOrders2ToOrders = (orders2: Orders2[]) => {
     return orders2.map((order) => ({
       ...order,
-      items: order.items.length === 1 ? order.items[0] : order.items[0], // Items 배열에서 첫 번째 항목만 선택
+      items: order.items,
     }));
   };
 
@@ -49,6 +49,7 @@ export default function MyPage() {
     const fetchData = async () => {
       try {
         const orders2: Orders2[] = (await getOrderedItemsByBuyerId(userId)) || [];
+        console.log('qqqqqq', orders2);
         const orders: Orders[] = convertOrders2ToOrders(orders2);
         const reviewsWritten: Reviews[] = (await getWrittenReviewByUserId(userId)) || [];
         const reviewsUnwritten: Reviews[] = (await getUnWrittenReviewByUserId(userId)) || [];
