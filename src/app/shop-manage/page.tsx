@@ -1,13 +1,13 @@
 'use client';
 
-import { SiteHeader } from '@/components/shop-manage/site-header';
+import { SiteHeader } from '@/components/shop-manage/SiteHeader';
 import { SidebarInset } from '@/components/ui/sidebar';
-import { DataTable } from '@/components/shop-manage/data-table';
+import { DataTable } from '@/components/shop-manage/DataTable';
 import { createColumns } from './columns';
 import type { Payment } from './columns';
-import { useItemsBySellerId } from '@/hooks/queries/use-items-by-seller-id';
-import { useUpdateItem } from '@/hooks/mutate/use-update-item';
-import { useDeleteItem } from '@/hooks/mutate/use-delete-item';
+import { useUpdateItem } from '@/hooks/mutate/useUpdateItem';
+import { useDeleteItem } from '@/hooks/mutate/useDeleteItem';
+import { useItemsBySellerId } from '@/hooks/queries/useItemsBySellerId';
 
 const ShopManagePage = () => {
   const { data: paymentList, isLoading, error } = useItemsBySellerId(5);

@@ -18,6 +18,7 @@ export default function AuthListener() {
       if (session && (event === AUTH_EVENTS.SIGNED_IN || event === AUTH_EVENTS.TOKEN_REFRESHED)) {
         login(
           {
+            id: session.user.id,
             email: session.user.email!,
             nickname: session.user.user_metadata?.nickname || '',
           },

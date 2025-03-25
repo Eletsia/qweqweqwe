@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
 type AuthState = {
-  user: { email: string; nickname: string } | null;
+  user: { id: string; email: string; nickname: string } | null;
   accessToken: string | null;
   refreshToken: string | null;
   login: (
-    user: { email: string; nickname: string },
+    user: { id: string; email: string; nickname: string },
     accessToken: string,
     refreshToken: string,
   ) => void;
