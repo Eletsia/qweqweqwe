@@ -47,7 +47,7 @@ export default function HomePage() {
   );
 
   const handleItemClick = (item: Item) => {
-    const watchedItems = JSON.parse(localStorage.getItem('watchedItems') || '[]');
+    const watchedItems: Item[] = JSON.parse(localStorage.getItem('watchedItems') || '[]');
     const updatedItems = [item, ...watchedItems.filter((i) => i.item_id !== item.item_id)];
     localStorage.setItem('watchedItems', JSON.stringify(updatedItems));
     router.push(`/detail/${item.item_id}`);
