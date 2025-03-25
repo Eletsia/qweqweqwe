@@ -13,20 +13,23 @@ import {
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { useState } from 'react';
+import { addReview } from '@/api/reviewsApi';
 
-const ReviewModal = () => {
+const ReviewModal = ({ reviewId, written }: { reviewId: number; written: boolean }) => {
   const [text, setText] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
+  const handleReviewUpload = async () => {
+    const data = await addReview({ id: reviewId, content: text });
+  };
   return (
     <>
-      {/* 헤더에 가려지길래 마진탑넣고 테스트 */}
       <div className="mt-20">
         <Dialog>
           <DialogTrigger>
-            <Button variant="outline">후기작성</Button>
+            <Button variant="outline">{written ? '후기 수정' : '후기 작성'}</Button>
           </DialogTrigger>
 
           <DialogContent className="max-w-xl p-6">
@@ -82,7 +85,9 @@ const ReviewModal = () => {
               <Button variant="outline" className="mr-2">
                 취소
               </Button>
-              <Button variant="default">등록</Button>
+              <Button variant="default" onClick={handleReviewUpload}>
+                등록
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
