@@ -26,10 +26,10 @@ export default function MyPage() {
     reviews_written: [],
     reviews_unwritten: [],
   });
-  const convertOrders2ToOrders = (orders2: Orders2[]) => {
+  const convertOrders2ToOrders = (orders2: Orders2[]): Orders[] => {
     return orders2.map((order) => ({
       ...order,
-      items: order.items,
+      items: order.items && order.items.length > 0 ? order.items[0] : { title: '', thumbnail: '' },
     }));
   };
 
