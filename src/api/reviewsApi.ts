@@ -21,19 +21,13 @@ export const getReviewsByItemId = async (id: number) => {
 
 //@param id user의 uid 정보
 //@return 해당 유저의 review 정보 모두
-export const getReviewByUserId = async (id: string) => {
-  return data;
-};
-
-//@param id user의 uid 정보
-//@return 해당 유저의 review 정보 모두
 export const getWrittenReviewByUserId = async (id: string) => {
   const { data, error, status } = await supabase
     .from('reviews')
     .select('*,items(thumbnail,title)')
     .eq('uid', id)
     .eq('written', true);
-
+  if (error) console.error('getWrittenReviewByUserId', error, status);
   return data;
 };
 
@@ -45,7 +39,7 @@ export const getUnWrittenReviewByUserId = async (id: string) => {
     .select('*,items(thumbnail,title)')
     .eq('uid', id)
     .eq('written', false);
-
+  if (error) console.error('getUnwrittenReviewByUserId', error, status);
   return data;
 };
 
@@ -57,12 +51,6 @@ export const addReview = async ({ id, content }: { id: number; content: string }
     .update({ content: content, written: true })
     .eq('review_id', id)
     .select();
-  return data;
-};
-
-//@param 삭제할 리뷰의 review_id 값
-//@return 삭제 결과
-export const deleteReview = async (id: number) => {
-  const { data, error, status } = await supabase.from('reviews').delete().eq('review_id', id);
+  if (error) console.error('addreview', error, status);
   return data;
 };
