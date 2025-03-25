@@ -105,7 +105,7 @@ export default function HomePage() {
               </CardContent>
 
             <ShoppingBasket
-              className="absolute bottom-2 right-2 h-6 w-6 text-grey-500 transition hover:text-grey-600"
+              className="absolute bottom-2 right-2 h-6 w-6 text-gray-500 transition hover:text-gray-600"
             />
             </Card>
           ))}
