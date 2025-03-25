@@ -1,7 +1,7 @@
 import supabase from '@/services/supabase';
 
 //@param id 유저의 uid 값
-//@return sellers 테이블의 전체 내용용 없을경우 빈배열이 반환됨됨
+//@return sellers 테이블의 전체 내용 없을경우 빈배열이 반환됨됨
 export const getSellerInfo = async (id: string) => {
   const { data, error, status } = await supabase
     .from('sellers')
@@ -15,7 +15,7 @@ export const getSellerInfo = async (id: string) => {
 //@return 추가된 seller 데이터 값
 export const addSeller = async (id: string) => {
   const { data, error, status } = await supabase
-    .from('ordered_items')
+    .from('sellers')
     .insert({
       uid: id,
       title: 'title',
