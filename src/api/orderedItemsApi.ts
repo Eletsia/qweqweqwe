@@ -20,6 +20,18 @@ export const getOrderedItemsBySellerId = async (id: number) => {
   return data;
 };
 
+export const getOrderedItemsByBuyerId = async (id: string) => {
+  const { data, error, status } = await supabase
+    .from('ordered_items')
+    .select(
+      `order_id,amount,item_id,order_status,created_at,
+      items(title, thumbnail)
+      `,
+    )
+    .eq('buyer_id', id);
+  return data;
+};
+
 //@param id order_id 주문번호
 //@return 해당 주문번호에 대한 모든 연관데이터
 export const getOrderedItemsById = async (id: number) => {
@@ -42,7 +54,7 @@ export const addOrderedItems = async (items: ItemArray) => {
 //enum list : pending paid shipped delivered cancelled
 //@return 업데이트된 status 데이터 값
 export const updateOrderStatus = async (status: string) => {
-  const { data, error, status } = await supabase
+  const { data, error } = await supabase
     .from('items')
     .update({
       status: status,
@@ -51,7 +63,7 @@ export const updateOrderStatus = async (status: string) => {
   return data;
 };
 
-//@param 삭제할 주문문의 order_id 값
+//@param 삭제할 주문의 order_id 값
 //@return 삭제 결과
 export const deleteOrderItems = async (id: number) => {
   const { data, error, status } = await supabase.from('ordered_items').delete().eq('order_id', id);

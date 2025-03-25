@@ -32,6 +32,14 @@ export const getItemById = async (id: number) => {
   return data;
 };
 
+//@param id[] 가져올 상품의 id 배열 값
+//@return 일치하는 상품들의 정보 배열
+export const getItemsByIdArray = async (ids: number[]) => {
+  const { data, error, status } = await supabase.from('items').select('*').in('item_id', ids);
+  if (error) console.error('getItemByIdArray', error);
+  return data;
+};
+
 //@param item 배열
 //@return 추가된 item 데이터 값
 export const addItem = async (item: Item) => {
