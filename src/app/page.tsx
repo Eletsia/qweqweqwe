@@ -79,7 +79,7 @@ export default function HomePage() {
           <Card
             key={item.item_id}
             className="relative cursor-pointer"
-            onClick={() => router.push(`/detail/${item.item_id}`)} // 상세 페이지로 이동
+            onClick={() => handleItemClick(item)} // 상세 페이지로 이동 및 최근 본 상품에 추가
           >
             <CardHeader>
               <Image
