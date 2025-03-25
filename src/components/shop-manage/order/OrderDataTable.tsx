@@ -9,10 +9,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { orderedColumns } from './OrderColumnDef';
-import { OrderItem } from './temp';
+import { OrderedItem } from './temp';
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
-export const DataTable = ({ data }: { data: OrderItem[] }) => {
+export const DataTable = ({ data }: { data: OrderedItem[] }) => {
   const table = useReactTable({
     data,
     columns: orderedColumns,

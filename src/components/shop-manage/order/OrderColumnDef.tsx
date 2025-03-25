@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { ORDER_STATUS, OrderItem, OrderStatus } from './temp';
+import { ORDER_STATUS, OrderedItem, OrderStatus } from './temp';
 import Image from 'next/image';
 import {
   Select,
@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/select';
 
 /** 주문 상품 테이블 컬럼 데이터 */
-export const orderedColumns: ColumnDef<OrderItem>[] = [
+export const orderedColumns: ColumnDef<OrderedItem>[] = [
   {
     id: 'orderId',
     header: '주문번호',
@@ -54,6 +54,7 @@ export const orderedColumns: ColumnDef<OrderItem>[] = [
 
       const handleStatusChange = (value: OrderStatus) => {
         // 상품 상태 변경 로직
+        console.log('value ➡️', value);
       };
 
       return (
