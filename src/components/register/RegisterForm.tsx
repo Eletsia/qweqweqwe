@@ -92,7 +92,7 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>닉네임</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input placeholder="최소 2자 이상 입력해 주세요." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -105,7 +105,7 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>비밀번호</FormLabel>
               <FormControl>
-                <Input {...field} type="password" />
+                <Input placeholder="최소 8자 이상 입력해 주세요." {...field} type="password" />
               </FormControl>
               <FormMessage />
             </FormItem>

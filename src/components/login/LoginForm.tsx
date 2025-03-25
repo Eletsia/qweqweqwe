@@ -15,6 +15,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import supabase from '@/services/supabase';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const formSchema = z.object({
@@ -32,6 +33,8 @@ export default function LoginForm() {
     },
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const { email, password } = data;
@@ -45,6 +48,7 @@ export default function LoginForm() {
       }
 
       alert('로그인 성공');
+      router.push('/');
     } catch (error: unknown) {
       if (error instanceof Error) {
         alert(error.message);
