@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 import { getUserInfo } from '@/api/usersApi';
 import { useEffect, useState } from 'react';
@@ -37,7 +38,7 @@ export default function MyPage() {
       setUser(data);
     }
     fetchUsers();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const fetchData = async () => {

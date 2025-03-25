@@ -22,7 +22,7 @@ const ReviewModal = ({ reviewId, written }: { reviewId: number; written: boolean
     setText(e.target.value);
   };
   const handleReviewUpload = async () => {
-    const data = await addReview({ id: reviewId, content: text });
+    await addReview({ id: reviewId, content: text });
   };
   return (
     <>

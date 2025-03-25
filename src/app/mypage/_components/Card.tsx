@@ -1,6 +1,5 @@
 import ReviewModal from '@/components/mypage/ReviewModal';
 import { TabContents } from '../_types/type';
-import { useState } from 'react';
 
 type CardProps = {
   tabContents: TabContents;
