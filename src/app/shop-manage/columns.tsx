@@ -5,7 +5,7 @@
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
-import { DialogRowActions } from '@/components/shop-manage/dialog-row-actions';
+import { DialogRowActions } from '@/components/shop-manage/DialogRow';
 
 export type Payment = {
   id: string;

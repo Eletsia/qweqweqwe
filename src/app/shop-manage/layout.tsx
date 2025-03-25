@@ -1,4 +1,4 @@
-import { AppSidebar } from '@/components/shop-manage/app-sidebar';
+import { AppSidebar } from '@/components/shop-manage/AppSideBar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 
 export default async function SellLayout({
