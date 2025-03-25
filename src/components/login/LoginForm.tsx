@@ -64,34 +64,73 @@ export default function LoginForm() {
         <FormField
           control={form.control}
           name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>이메일</FormLabel>
-              <FormControl>
-                <Input placeholder="example@exam.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const error = form.formState.errors[field.name];
+            return (
+              <FormItem>
+                <FormLabel className="!text-black">이메일</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="example@exam.com"
+                    {...field}
+                    className={`${error ? '!focus:border-red-500 !border-red-500' : ''}`}
+                  />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={form.control}
           name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>비밀번호</FormLabel>
-              <FormControl>
-                <Input {...field} type="password" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const error = form.formState.errors[field.name];
+            return (
+              <FormItem>
+                <FormLabel className="!text-black">비밀번호</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    className={`${error ? '!focus:border-red-500 !border-red-500' : ''}`}
+                  />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
+
+        {/* 에러메세지 모아서 표시 */}
+        {Object.keys(form.formState.errors).length > 0 && (
+          <div className="text-sm text-red-500">
+            <ul className="list-inside list-disc">
+              {Object.entries(form.formState.errors).map(([fieldName, error]) => {
+                let label = '';
+                switch (fieldName) {
+                  case 'email':
+                    label = '이메일';
+                    break;
+                  case 'password':
+                    label = '비밀번호';
+                    break;
+                  default:
+                    label = fieldName;
+                }
+                return (
+                  <li key={fieldName}>
+                    <strong>{label}:</strong> {error.message}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+
         <Button type="submit">로그인</Button>
         <div className="text-center">
           <p className="text-sm text-gray-600">
             계정이 없으신가요?
-            <Link href="/register" className="text-black-600 hover:text-black-500 font-medium">
+            <Link href="/register" className="ml-1 font-medium text-gray-800 hover:text-gray-700">
               회원가입하기
             </Link>
           </p>
