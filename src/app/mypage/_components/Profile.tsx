@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/router';
 import { User } from '../_types/type';
 
 type ProfileProps = {
