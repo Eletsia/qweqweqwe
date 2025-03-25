@@ -11,11 +11,11 @@ export type TabContents = {
 };
 
 export type Orders = {
+  order_id: number;
   amount: number;
   created_at: string;
   item_id: number;
-  items: Items[];
-  order_id: number;
+  items: Items;
   order_status: string;
 };
 
@@ -27,6 +27,7 @@ export type Items = {
 export type Reviews = {
   content: string;
   created_at: string;
+  items: Items;
   item_id: number;
   review_id: number;
   uid: string;

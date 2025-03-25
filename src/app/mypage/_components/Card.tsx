@@ -1,4 +1,6 @@
+import ReviewModal from '@/components/mypage/ReviewModal';
 import { TabContents } from '../_types/type';
+import { useState } from 'react';
 
 type CardProps = {
   tabContents: TabContents;
@@ -29,10 +31,18 @@ export const Cards = ({ tabContents, selectedTab }: CardProps) => {
   } else
     return (
       <>
-        <div className="mt-8 grid w-full max-w-4xl grid-cols-3 gap-6">
+        <div className="mt-8 grid w-full max-w-4xl grid-rows-3 gap-6">
           {tabContents[selectedTab].map((item, index) => (
-            <div key={item.item_id || index} className="relative h-40 w-full bg-gray-200">
-              <img src={item.src} className="h-full w-full rounded-lg object-cover" />
+            <div key={item.item_id || index} className="flex items-center gap-6">
+              <div className="relative h-40 w-40 bg-gray-200">
+                <img src={item.items.thumbnail} className="h-full w-full rounded-lg object-cover" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold">상품명 : {item.items.title}</h3>
+                <p>{item.content || '리뷰를 작성해 주세요!'}</p>
+                <p>작성 가능 날짜 : {item.created_at} 로 부터 7일</p>
+              </div>
+              <ReviewModal reviewId={item.review_id} written={item.written} />
             </div>
           ))}
         </div>
