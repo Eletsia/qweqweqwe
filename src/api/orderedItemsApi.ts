@@ -29,6 +29,7 @@ export const getOrderedItemsByBuyerId = async (id: string) => {
       `,
     )
     .eq('buyer_id', id);
+
   return data;
 };
 
