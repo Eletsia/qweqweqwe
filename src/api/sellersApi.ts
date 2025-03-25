@@ -22,5 +22,6 @@ export const addSeller = async (id: string) => {
       banner: 'banner',
     })
     .select();
+    
   return data;
 };

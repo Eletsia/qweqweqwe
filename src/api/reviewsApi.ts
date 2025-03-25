@@ -22,10 +22,6 @@ export const getReviewsByItemId = async (id: number) => {
 //@param id user의 uid 정보
 //@return 해당 유저의 review 정보 모두
 export const getReviewByUserId = async (id: string) => {
-  const { data, error } = await supabase.from('reviews').select('*').eq('uid', id);
-  if (error) console.error('getReviewByUserId', error);
-  const { data, error, status } = await supabase.from('reviews').select('*').eq('uid', id);
-
   return data;
 };
 
