@@ -12,6 +12,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { ShoppingBasket } from 'lucide-react';
+import RecentlyViewedSidebar from '@/components/RecentlyViewedSidebar';
 
 // Supabase에서 전체 상품 리스트를 불러오는 함수
 async function fetchItems(): Promise<Item[]> {
@@ -45,9 +46,17 @@ export default function HomePage() {
     item.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
+  const handleItemClick = (item: Item) => {
+    const watchedItems = JSON.parse(localStorage.getItem('watchedItems') || '[]');
+    const updatedItems = [item, ...watchedItems.filter((i) => i.item_id !== item.item_id)];
+    localStorage.setItem('watchedItems', JSON.stringify(updatedItems));
+    router.push(`/detail/${item.item_id}`);
+  };
+
   return (
-    <main className="mx-auto max-w-4xl p-4 pt-20">
-      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+    <>
+      <main className="mx-auto max-w-4xl p-4 pt-20">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-lg font-bold">
           {searchQuery ? `"${searchQuery}" 검색 결과` : '전체 상품'}
         </h1>
@@ -83,24 +92,26 @@ export default function HomePage() {
               <CardTitle className="mt-2 text-base">{item.title}</CardTitle>
             </CardHeader>
 
-            <CardContent className="pb-10">
-              <div className="flex flex-col gap-2">
-                <p className="line-clamp-2 text-sm text-gray-700">{item.content}</p>
+              <CardContent className="pb-10">
+                <div className="flex flex-col gap-2">
+                  <p className="line-clamp-2 text-sm text-gray-700">{item.content}</p>
 
-                <div className="mt-1 flex items-center justify-between">
-                  <span className="text-base font-semibold text-black">
+                  <div className="mt-1 flex items-center justify-between">
+                    <span className="text-base font-semibold text-black">
                     {item.price.toLocaleString()}원
                   </span>
                 </div>
               </div>
-            </CardContent>
+              </CardContent>
 
             <ShoppingBasket
               className="absolute bottom-2 right-2 h-6 w-6 text-grey-500 transition hover:text-grey-600"
             />
-          </Card>
-        ))}
-      </div>
-    </main>
+            </Card>
+          ))}
+        </div>
+      </main>
+      <RecentlyViewedSidebar items={items} />
+    </>
   );
 }
