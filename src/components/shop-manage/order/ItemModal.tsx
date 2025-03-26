@@ -23,20 +23,31 @@ type BuyerInfo = {
 
 /** 주문 정보 디테일을 확인할 수 있는 모달 */
 export const ItemModal = ({ open, setOpen, item }: ItemModalProps) => {
-  const [buyer, setBuyer] = useState<BuyerInfo>({ nickname: '', email: '' });
+  const [buyer, setBuyer] = useState<BuyerInfo | null>(null);
+
+  useEffect(() => {
+    const getUserDetail = async () => {
+      if (!item) return;
+      try {
+        const { data } = await getUserInfo(item.buyer_id);
+        if (data) {
+          setBuyer({
+            nickname: data.nickname || '',
+            email: data.email || '',
+          });
+        }
+      } catch (error) {
+        console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+      }
+    };
+
+    getUserDetail();
+  }, [item]);
 
   if (!item) {
     setOpen(false);
     return;
   }
-
-  useEffect(() => {
-    const getUserDetail = async () => {
-      const data = await getUserInfo(item.buyer_id);
-      setBuyer({ nickname: data?.nickname, email: data?.email });
-    };
-    getUserDetail();
-  }, []);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -74,9 +85,7 @@ export const ItemModal = ({ open, setOpen, item }: ItemModalProps) => {
             <ul className="flex flex-col gap-2 font-semibold">
               <li>{item.order_id}</li>
               <li>{formatKoreanDate(item.created_at)}</li>
-              <li>
-                {buyer.nickname} ({buyer.email})
-              </li>
+              <li>{!buyer ? '' : `${buyer?.nickname} (${buyer?.email})`}</li>
               <li>{item.amount}</li>
             </ul>
           </div>
