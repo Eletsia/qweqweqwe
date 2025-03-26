@@ -29,7 +29,14 @@ export const orderedColumns: ColumnDef<OrderedItem>[] = [
       const item = row.original;
       return (
         <div className="flex flex-row gap-2 py-5">
-          <Image src="" alt="" width={100} height={100} className="rounded-xl bg-gray-300" />
+          <div className="relative h-[100px] w-[100px]">
+            <Image
+              src={item.item.thumbnail}
+              alt={item.item.title}
+              fill
+              className="rounded-xl bg-gray-300 object-cover"
+            />
+          </div>
           <div className="flex max-h-[100px] flex-col items-start gap-2 p-1">
             <h3 className="truncate font-bold">{item.item.title}</h3>
             <p className="line-clamp-3 overflow-hidden text-gray-500">{item.item.content}</p>
