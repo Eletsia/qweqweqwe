@@ -8,7 +8,7 @@ type GoogleLoginBtnProps = {
 
 export const GoogleLoginBtn: React.FC<GoogleLoginBtnProps> = ({ onGoogleLogin }) => {
   return (
-    <Button variant="outline" onClick={onGoogleLogin}>
+    <Button className="w-full" variant="outline" onClick={onGoogleLogin}>
       <FcGoogle style={{ marginRight: '8px' }} />
       구글로 시작하기
     </Button>
