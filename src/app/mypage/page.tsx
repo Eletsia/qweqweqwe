@@ -6,7 +6,7 @@ import { getOrderedItemsByBuyerId } from '@/api/orderedItemsApi';
 import { getUnWrittenReviewByUserId, getWrittenReviewByUserId } from '@/api/reviewsApi';
 import { Profile } from './_components/Profile';
 import { StoreButton } from './_components/StoreButton';
-import { Orders, Orders2, Reviews, TabContents, User } from './_types/type';
+import { Orders, Reviews, TabContents, User } from './_types/type';
 import useAuthStore from '@/store/authStore';
 
 export default function MyPage() {
@@ -26,12 +26,6 @@ export default function MyPage() {
     reviews_written: [],
     reviews_unwritten: [],
   });
-  const convertOrders2ToOrders = (orders2: Orders2[]): Orders[] => {
-    return orders2.map((order) => ({
-      ...order,
-      items: order.items && order.items.length > 0 ? order.items[0] : { title: '', thumbnail: '' },
-    }));
-  };
 
   useEffect(() => {
     async function fetchUsers() {
@@ -48,9 +42,7 @@ export default function MyPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const orders2: Orders2[] = (await getOrderedItemsByBuyerId(userId)) || [];
-        console.log('qqqqqq', orders2);
-        const orders: Orders[] = convertOrders2ToOrders(orders2);
+        const orders: Orders[] = (await getOrderedItemsByBuyerId(userId)) || [];
         const reviewsWritten: Reviews[] = (await getWrittenReviewByUserId(userId)) || [];
         const reviewsUnwritten: Reviews[] = (await getUnWrittenReviewByUserId(userId)) || [];
 
