@@ -111,7 +111,7 @@ export default function HomePage() {
                   e.stopPropagation(); // 카드 전체 클릭 방지
 
                   const cartItem: CartItem = {
-                    id: item.item_id, // CartItem에는 'id'라는 속성이 필요
+                    id: item.item_id,
                     amount: 1
                   };
 
