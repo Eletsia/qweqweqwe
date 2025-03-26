@@ -112,7 +112,7 @@ export default function HomePage() {
 
                   const cartItem: CartItem = {
                     id: item.item_id, // CartItem에는 'id'라는 속성이 필요
-                    amount: item.stock
+                    amount: 1
                   };
 
                   addToCart(cartItem);
