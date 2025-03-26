@@ -27,7 +27,7 @@ export const getItemsBySellerId = async (id: number): Promise<Payment[]> => {
 //@param id 상품의 id 값
 //@return 해당 상품에 대한 정보만 가져옴
 export const getItemById = async (id: number) => {
-  const { data, error, status } = await supabase.from('items').select('*').eq('item_id', id);
+  const { data, error } = await supabase.from('items').select('*').eq('item_id', id);
   if (error) console.error('getItemById', error);
   return data;
 };
@@ -46,7 +46,7 @@ export const getItemsByIdArray = async (ids: number[]): Promise<Item[]> => {
 //@param item 배열
 //@return 추가된 item 데이터 값
 export const addItem = async (item: Item) => {
-  const { data, error, status } = await supabase.from('items').insert([item]).select();
+  const { data, error } = await supabase.from('items').insert([item]).select();
   if (error) {
     console.error('addItem', error);
     return;
@@ -78,4 +78,3 @@ export const deleteItem = async (itemId: string) => {
     throw error;
   }
 };
-
