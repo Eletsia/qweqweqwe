@@ -1,6 +1,6 @@
-import { OrderedItem } from '@/components/shop-manage/order/temp';
-import supabase from '@/services/supabase';
 import { useQuery } from '@tanstack/react-query';
+import { getOrderedItemsBySellerId } from '@/api/orderedItemsApi';
+import { getSellerInfo } from '@/api/sellersApi';
 
 /**
  * 판매자의 주문 아이템 정보를 가져오는 쿼리 훅
@@ -11,31 +11,9 @@ export const UseGetOrders = (id: string) => {
     queryKey: ['orders'],
     queryFn: async () => {
       const sellerInfo = await getSellerInfo(id);
+      // const sellerInfo = await getSellerInfo('6c8b6052-81b3-480b-bf66-177b4b115f27');
       const data = await getOrderedItemsBySellerId(sellerInfo?.seller_id);
       return data;
     },
   });
-};
-
-// 유저의 uid로 seller id를 찾기
-const getSellerInfo = async (uid: string) => {
-  const { data, error } = await supabase
-    .from('sellers')
-    .select('seller_id')
-    .eq('uid', uid)
-    .maybeSingle();
-
-  if (error) throw new Error('유저의 스토어 정보를 가져오는 도중 오류가 발생했습니다.');
-  return data;
-};
-
-// 아이템 목록 가져오기
-export const getOrderedItemsBySellerId = async (id: number) => {
-  const { data, error } = await supabase.rpc('get_ordered_items', {
-    p_seller_id: id,
-  });
-
-  if (error) throw new Error('상품 목록을 가져오는 도중 오류가 발생했습니다.');
-
-  return data as OrderedItem[];
 };

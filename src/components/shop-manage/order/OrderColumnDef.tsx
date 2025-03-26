@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { ORDER_STATUS, OrderedItem, OrderStatus } from './temp';
+import { OrderedItem, OrderStatus } from '../../../types/orderType';
 import Image from 'next/image';
 import {
   Select,
@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useUpdateOrderStatus } from '@/hooks/mutate/useUpdateStatus';
+import { ORDER_STATUS } from '@/utils/translateOrderStatus';
 
 /** 주문 상품 테이블 컬럼 데이터 */
 export const orderedColumns: ColumnDef<OrderedItem>[] = [
@@ -78,7 +79,6 @@ export const orderedColumns: ColumnDef<OrderedItem>[] = [
             </Select>
           </div>
         </div>
-        // <div className="whitespace-nowrap px-5 text-center">{ORDER_STATUS(item.order_status)}</div>
       );
     },
   },
