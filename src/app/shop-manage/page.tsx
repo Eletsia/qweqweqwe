@@ -21,24 +21,21 @@ export default function ShopManagePage() {
   const [isSellerLoading, setIsSellerLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      if (!user?.id) {
-        setIsSellerLoading(false);
+    const fetchSellerId = async () => {
+      if (!user) {
         return;
       }
       try {
-        const { data, error } = await getSellerInfo(user.id);
-        if (error || !data) {
-          console.error('Seller 정보를 불러오는데 실패했습니다.', error);
-        } else {
-          setSellerId(data.seller_id);
-        }
-      } catch (err) {
-        console.error(err);
+        const data = await getSellerInfo(user.id);
+        setSellerId(data?.seller_id ?? null);
+      } catch (error) {
+        console.error(error);
       } finally {
         setIsSellerLoading(false);
       }
-    })();
+    };
+
+    fetchSellerId();
   }, [user]);
 
   const {
