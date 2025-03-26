@@ -1,4 +1,5 @@
 import LoginForm from '@/components/login/LoginForm';
+import SocialLoginForm from '@/components/login/SocialLoginForm';
 
 export default function Login() {
   return (
@@ -8,6 +9,7 @@ export default function Login() {
           <h1 className="text-3xl font-bold">로그인</h1>
         </div>
         <LoginForm />
+        <SocialLoginForm />
       </div>
     </div>
   );
