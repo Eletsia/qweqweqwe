@@ -8,6 +8,7 @@ export const getUserInfo = async (id: string) => {
     .select('email,nickname,introduction')
     .eq('uid', id)
     .single();
-  console.log(data);
+  if (error) console.error('getUserInfo', error);
+  console.log(status);
   return data;
 };
