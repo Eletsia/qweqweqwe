@@ -25,11 +25,7 @@ export const getOrderedItemsBySellerId = async (id: number) => {
 export const getOrderedItemsByBuyerId = async (id: string) => {
   const { data, error } = await supabase
     .from('ordered_items')
-    .select(
-      `order_id,amount,item_id,order_status,created_at,
-      items(title, thumbnail)
-      `,
-    )
+    .select('*,items(title, thumbnail)')
     .eq('buyer_id', id);
 
   if (error) console.error('getOrderedItemsByBuyerId', error);
