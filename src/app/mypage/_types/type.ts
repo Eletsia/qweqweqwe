@@ -14,7 +14,7 @@ export type Orders = {
   amount: number;
   created_at: string;
   item_id: number;
-  items: Items[];
+  items: Items;
   order_id: number;
   order_status: string;
 };
