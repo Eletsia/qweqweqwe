@@ -4,24 +4,39 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { OrderedItem } from '@/types/orderType';
 import { formatNumber } from '@/utils/formatNumber';
-import { Row } from '@tanstack/react-table';
 import Image from 'next/image';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { OrderStatusContainer } from './OrderStatusButton';
+import { formatKoreanDate } from '@/utils/formatDate';
+import { getUserInfo } from '@/api/usersApi';
 
 type ItemModalProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  selectedRow: Row<OrderedItem> | null;
+  item: OrderedItem | undefined;
+};
+
+type BuyerInfo = {
+  nickname: string;
+  email: string;
 };
 
 /** 주문 정보 디테일을 확인할 수 있는 모달 */
-export const ItemModal = ({ open, setOpen, selectedRow }: ItemModalProps) => {
-  if (!selectedRow) {
+export const ItemModal = ({ open, setOpen, item }: ItemModalProps) => {
+  const [buyer, setBuyer] = useState<BuyerInfo>({ nickname: '', email: '' });
+
+  if (!item) {
     setOpen(false);
     return;
   }
-  const item = selectedRow.original;
+
+  useEffect(() => {
+    const getUserDetail = async () => {
+      const data = await getUserInfo(item.buyer_id);
+      setBuyer({ nickname: data?.nickname, email: data?.email });
+    };
+    getUserDetail();
+  }, []);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -58,8 +73,10 @@ export const ItemModal = ({ open, setOpen, selectedRow }: ItemModalProps) => {
             </ul>
             <ul className="flex flex-col gap-2 font-semibold">
               <li>{item.order_id}</li>
-              <li>{item.created_at}</li>
-              <li>닉네임 (email@email.com)</li>
+              <li>{formatKoreanDate(item.created_at)}</li>
+              <li>
+                {buyer.nickname} ({buyer.email})
+              </li>
               <li>{item.amount}</li>
             </ul>
           </div>
