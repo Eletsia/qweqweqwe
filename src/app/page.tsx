@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -24,7 +24,6 @@ async function fetchItems(): Promise<Item[]> {
 
 export default function HomePage() {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
 
   // TanStack Query를 사용해 상품 데이터를 불러옴
   const {
@@ -37,15 +36,38 @@ export default function HomePage() {
     queryFn: fetchItems, // 데이터를 가져올 함수
   });
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const [filteredItems, setFilteredItems] = useState<Item[]>(items);
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // 디바운싱 타이머
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  // 필터링 적용
+  useEffect(() => {
+    const results =
+      debouncedSearchQuery === ''
+        ? items
+        : items.filter((item) => item.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    setFilteredItems(results);
+  }, [debouncedSearchQuery]);
+
   // 로딩 상태 처리
   if (isLoading) return <Loading />;
   // 에러 상태 처리
   if (isError) return <Error2 message={(error as Error).message} />;
-
-  // 검색어로 필터링된 상품 리스트
-  const filteredItems = items.filter((item) =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
 
   const handleItemClick = (item: Item) => {
     const watchedItems: Item[] = JSON.parse(localStorage.getItem('watchedItems') || '[]');
@@ -68,7 +90,7 @@ export default function HomePage() {
               type="text"
               placeholder="찾는 상품을 검색 해보세요!"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearch}
               className="pl-9" // 아이콘만큼 왼쪽 패딩 추가
             />
           </div>
@@ -112,7 +134,7 @@ export default function HomePage() {
 
                   const cartItem: CartItem = {
                     id: item.item_id,
-                    amount: 1
+                    amount: 1,
                   };
 
                   addToCart(cartItem);
