@@ -1,4 +1,8 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
+import { useUpdateOrderStatus } from '@/hooks/mutate/useUpdateStatus';
+import { useUpdateStock } from '@/hooks/mutate/useUpdateStock';
 import { OrderedItem, OrderStatus } from '@/types/orderType';
 import { ORDER_STATUS } from '@/utils/translateOrderStatus';
 import { ChevronRight } from 'lucide-react';
@@ -52,10 +56,25 @@ const StatusStepper = ({ currentStatus }: { currentStatus: OrderStatus }) => {
 const ChangeOrderStatusButton = ({ item }: { item: OrderedItem }) => {
   const statusList: OrderStatus[] = ['pending', 'paid', 'shipped', 'delivered'];
   const currentStatusIndex = statusList.findIndex((status) => status === item.order_status);
+  const nextStatus = statusList[currentStatusIndex + 1];
+  const { mutate: updateStatus } = useUpdateOrderStatus();
+  const { mutate: updateStock } = useUpdateStock();
+
+  const handleUpdateStatus = () => {
+    const isConfirmed = confirm(`상품의 상태를 ${ORDER_STATUS(nextStatus)}로 변경하시겠습니까?`);
+    if (!isConfirmed) return;
+    if (item.order_status === 'pending') {
+      updateStock({ itemId: item.item_id, stock: item.item.stock - item.amount });
+    }
+    updateStatus({ orderId: item.order_id, status: nextStatus });
+  };
 
   return (
-    <Button disabled={item.order_status === 'pending' && item.amount > item.item.stock}>
-      {ORDER_STATUS(statusList[currentStatusIndex + 1])} 상태로 변경
+    <Button
+      disabled={item.order_status === 'pending' && item.amount > item.item.stock}
+      onClick={handleUpdateStatus}
+    >
+      {ORDER_STATUS(nextStatus)} 상태로 변경
     </Button>
   );
 };
