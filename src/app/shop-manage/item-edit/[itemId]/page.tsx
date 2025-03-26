@@ -110,7 +110,6 @@ export default function ItemEditPage() {
         description: item.content || '',
         img_list: defaultImages,
       });
-      console.log('초기화된 폼 값:', form.getValues());
     };
 
     fetchItem();

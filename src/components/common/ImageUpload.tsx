@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import supabase from '@/services/supabase';
 import { Button } from '@/components/ui/button';
@@ -27,25 +27,15 @@ export default function ImageUpload({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const [images, setImages] = useState<string[]>([]);
-  const isFirstMount = useRef(true);
 
-  // 최초 마운트 시 defaultImages 세팅
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // 최초 마운트 시 defaultImages 설정
   useEffect(() => {
     if (defaultImages.length > 0) {
       setImages(defaultImages);
     }
-  }, []);
-
+  }, [defaultImages]);
   // 외부에 이미지 목록 전달 (최초 마운트는 제외)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (isFirstMount.current) {
-      isFirstMount.current = false;
-      return;
-    }
-    onUpload(images);
-  }, [images]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -75,7 +65,9 @@ export default function ImageUpload({
       }
     }
 
-    setImages((prev) => [...prev, ...newUrls]);
+    const updatedImages = [...images, ...newUrls];
+    setImages(updatedImages);
+    onUpload(updatedImages);
     setSelectedFiles([]);
     setUploading(false);
   };
@@ -84,8 +76,8 @@ export default function ImageUpload({
     const updated = [...images];
     updated.splice(index, 1);
     setImages(updated);
+    onUpload(updated);
   };
-
   return (
     <div className="space-y-4">
       <input type="file" multiple accept="image/*" onChange={handleFileChange} />
