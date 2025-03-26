@@ -1,3 +1,5 @@
+import { OrderStatus } from './orderType';
+
 export type User = {
   nickname: string;
   email: string;
@@ -19,7 +21,7 @@ export type Orders = {
   amount: number;
   created_at: string;
   item_id: number;
-  order_status: string;
+  order_status: OrderStatus;
   items: Items;
 };
 
