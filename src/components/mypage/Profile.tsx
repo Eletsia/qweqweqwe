@@ -1,5 +1,6 @@
 'use client';
-import { User } from '../../../types/mypageType';
+
+import { User } from '@/types/mypageType';
 
 type ProfileProps = {
   user: User;
