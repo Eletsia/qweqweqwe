@@ -11,7 +11,6 @@ export const UseGetOrders = (id: string) => {
     queryKey: ['orders'],
     queryFn: async () => {
       const sellerInfo = await getSellerInfo(id);
-      // const sellerInfo = await getSellerInfo('6c8b6052-81b3-480b-bf66-177b4b115f27');
       const data = await getOrderedItemsBySellerId(sellerInfo?.seller_id);
       return data;
     },
