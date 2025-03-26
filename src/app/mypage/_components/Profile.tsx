@@ -1,3 +1,4 @@
+'use client';
 import { User } from '../_types/type';
 
 type ProfileProps = {
@@ -12,6 +13,7 @@ export const Profile = ({ user, selectedTab, setSelectedTab }: ProfileProps) => 
     { key: 'reviews_written', label: '작성한 후기' },
     { key: 'reviews_unwritten', label: '작성 가능한 후기' },
   ];
+
   return (
     <>
       <div className="flex w-full flex-col items-center">
