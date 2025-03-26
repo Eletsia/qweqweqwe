@@ -9,6 +9,20 @@ import { ChevronRight } from 'lucide-react';
 
 /** 현재 주문 상태와 상태 변경 버튼을 포함하는 컨테이너 컴포넌트 */
 export const OrderStatusContainer = ({ item }: { item: OrderedItem }) => {
+  const { mutate: updateStatus } = useUpdateOrderStatus();
+  const { mutate: updateStock } = useUpdateStock();
+
+  /** 주문 취소 버튼 핸들러 */
+  const handleCancelOrder = () => {
+    const isConfirmed = confirm('주문을 취소하시겠습니까?');
+    if (!isConfirmed) return;
+
+    if (item.order_status !== 'pending') {
+      updateStock({ itemId: item.item_id, stock: item.item.stock + item.amount });
+    }
+    updateStatus({ orderId: item.order_id, status: 'cancelled' });
+  };
+
   if (item.order_status === 'cancelled')
     return <p className="my-4 w-full text-center font-bold text-red-500">취소된 주문입니다.</p>;
   else if (item.order_status === 'delivered')
@@ -25,7 +39,9 @@ export const OrderStatusContainer = ({ item }: { item: OrderedItem }) => {
         <StatusStepper currentStatus={item.order_status} />
         <div className="flex justify-center gap-2">
           <ChangeOrderStatusButton item={item} />
-          <Button variant="destructive">주문 취소</Button>
+          <Button variant="destructive" onClick={handleCancelOrder}>
+            주문 취소
+          </Button>
         </div>
       </div>
       {item.order_status === 'pending' && item.amount > item.item.stock && (
