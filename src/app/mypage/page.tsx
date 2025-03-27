@@ -50,7 +50,7 @@ export default function MyPage() {
       setUser(user);
     };
     fetchUsers();
-  }, [userId]);
+  }, [userId, tabContents]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +75,11 @@ export default function MyPage() {
     <div className="relative mx-auto mt-20 flex w-full max-w-4xl flex-col items-center p-6">
       <StoreButton id={userId} />
       <Profile user={user} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      <Cards tabContents={tabContents} selectedTab={selectedTab}></Cards>
+      <Cards
+        tabContents={tabContents}
+        setTabContents={setTabContents}
+        selectedTab={selectedTab}
+      ></Cards>
     </div>
   );
 }
