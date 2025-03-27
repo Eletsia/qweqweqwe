@@ -8,8 +8,20 @@ import useAuthStore from '@/store/authStore';
 import { StoreButton } from '@/components/mypage/StoreButton';
 import { Profile } from '@/components/mypage/Profile';
 import { Cards } from '@/components/mypage/Card';
+import { useRouter } from 'next/navigation';
 
 export default function MyPage() {
+  const router = useRouter();
+  const userInfo = useAuthStore((state) => state.user);
+  const userId = userInfo?.id || '';
+
+  useEffect(() => {
+    if (!userId) {
+      alert('로그인 후 이용해주세요.');
+      router.push('/login');
+    }
+  }, [userId, router]);
+
   const [user, setUser] = useState<User>({
     nickname: '',
     email: '',
@@ -18,8 +30,8 @@ export default function MyPage() {
   const [selectedTab, setSelectedTab] = useState<
     'orders' | 'reviews_written' | 'reviews_unwritten'
   >('orders');
-  const userInfo = useAuthStore((state) => state.user);
-  const userId = userInfo?.id || '';
+  // const userInfo = useAuthStore((state) => state.user);
+  // const userId = userInfo?.id || '';
 
   const [tabContents, setTabContents] = useState<TabContents>({
     orders: [],
