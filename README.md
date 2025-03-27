@@ -167,25 +167,25 @@ Pick n Click (픽앤클릭)은 네이버 스토어를 차용한 쇼핑몰 웹애
 ## 📁 **프로젝트 구조**
 
 ```
-├──📁api #DB로부터 데이터를 받아오는 함수 모음 <br />
-├──📁app #앱라우터 기반 페이지 라우팅<br />
-├── 📁components<br />
-│ ├── 📁cart # 장바구니 관련 컴포넌트<br />
-│ ├── 📁common # 재사용 가능한 공통 컴포넌트<br />
-│ ├── 📁detail # 상품 상세 컴포넌트<br />
-│ ├── 📁home # 홈화면 컴포넌트<br />
-│ ├── 📁layout # 헤더 등 페이지 전체 레이아웃 컴포넌트<br />
-│ ├── 📁login # 로그인 컴포넌트<br />
-│ ├── 📁mypage # 마이페이지 컴포넌트<br />
-│ ├── 📁register # 회원가입 컴포넌트<br />
-│ ├── 📁shop-manage # 주문관리 관련 컴포넌트<br />
-│ └── 📁ui # shadcn/ui 모음<br />
-├── 📁hooks # TanStack Query 관련 설정<br />
-│ ├── 📁mutations <br />
-│ └── 📁queries<br />
-├── 📁lib # shadcn/ui 관련 폴더<br />
-├── 📁services # Supabase 클라이언트 설정 및 초기화 코드<br />
-├── 📁store # Zustand를 활용한 전역 상태 관리<br />
-├── 📁types # 타입 정의<br />
-└── 📁utils # 포맷팅 파일<br />
+├──📁api #DB로부터 데이터를 받아오는 함수 모음 
+├──📁app #앱라우터 기반 페이지 라우팅
+├── 📁components
+│ ├── 📁cart # 장바구니 관련 컴포넌트
+│ ├── 📁common # 재사용 가능한 공통 컴포넌트
+│ ├── 📁detail # 상품 상세 컴포넌트
+│ ├── 📁home # 홈화면 컴포넌트
+│ ├── 📁layout # 헤더 등 페이지 전체 레이아웃 컴포넌트
+│ ├── 📁login # 로그인 컴포넌트
+│ ├── 📁mypage # 마이페이지 컴포넌트
+│ ├── 📁register # 회원가입 컴포넌트
+│ ├── 📁shop-manage # 주문관리 관련 컴포넌트
+│ └── 📁ui # shadcn/ui 모음
+├── 📁hooks # TanStack Query 관련 설정
+│ ├── 📁mutations 
+│ └── 📁queries
+├── 📁lib # shadcn/ui 관련 폴더
+├── 📁services # Supabase 클라이언트 설정 및 초기화 코드
+├── 📁store # Zustand를 활용한 전역 상태 관리
+├── 📁types # 타입 정의
+└── 📁utils # 포맷팅 파일
 ```
