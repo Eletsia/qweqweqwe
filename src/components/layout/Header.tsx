@@ -31,7 +31,7 @@ export const Header = () => {
           <Link href="/cart">
             <div
               title="장바구니"
-              className="relative rounded-full bg-green-500 p-2 shadow-md transition hover:bg-green-600"
+              className="relative rounded-full bg-black p-2 transition hover:bg-gray-600"
             >
               <ShoppingBasket className="h-5 w-5 text-white" />
             </div>
