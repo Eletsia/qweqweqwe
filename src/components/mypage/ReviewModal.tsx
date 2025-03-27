@@ -20,14 +20,17 @@ const ReviewModal = ({
   reviewId,
   imgSrc,
   written,
+  open,
+  setOpen,
 }: {
   title: string;
   reviewId: number;
   imgSrc: string;
   written: boolean;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }) => {
   const [text, setText] = useState('');
-  const [open, setOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
