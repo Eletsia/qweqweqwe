@@ -7,7 +7,7 @@ Pick n Click (픽앤클릭)은 네이버 스토어를 차용한 쇼핑몰 웹애
 
 ## 📍 배포 링크
 
-[https://qweqweqwe-pubi.vercel.app](https://qweqweqwe-pubi.vercel.app)
+[https://qweqweqwe-five.vercel.app](https://qweqweqwe-five.vercel.app)
 
 <br />
 
