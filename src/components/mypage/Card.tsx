@@ -4,6 +4,7 @@ import { formatKoreanDate } from '@/utils/formatDate';
 import { ORDER_STATUS } from '@/utils/translateOrderStatus';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 type CardProps = {
   tabContents: TabContents;
@@ -11,6 +12,7 @@ type CardProps = {
 };
 
 export const Cards = ({ tabContents, selectedTab }: CardProps) => {
+  const [open, setOpen] = useState(false);
   if (selectedTab === 'orders') {
     return (
       <>
@@ -63,6 +65,8 @@ export const Cards = ({ tabContents, selectedTab }: CardProps) => {
                 imgSrc={item.items.thumbnail}
                 reviewId={item.review_id}
                 written={item.written}
+                open={open}
+                setOpen={setOpen}
               />
             </div>
           ))}
