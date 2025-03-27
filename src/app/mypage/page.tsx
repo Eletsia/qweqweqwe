@@ -1,13 +1,13 @@
 'use client';
 import { getUserInfo } from '@/api/usersApi';
 import { useEffect, useState } from 'react';
-import { Cards } from './_components/Card';
 import { getOrderedItemsByBuyerId } from '@/api/orderedItemsApi';
 import { getUnWrittenReviewByUserId, getWrittenReviewByUserId } from '@/api/reviewsApi';
-import { Profile } from './_components/Profile';
-import { StoreButton } from './_components/StoreButton';
-import { Orders, Reviews, TabContents, User } from './_types/type';
+import { Orders, Reviews, TabContents, User } from '../../types/mypageType';
 import useAuthStore from '@/store/authStore';
+import { StoreButton } from '@/components/mypage/StoreButton';
+import { Profile } from '@/components/mypage/Profile';
+import { Cards } from '@/components/mypage/Card';
 
 export default function MyPage() {
   const [user, setUser] = useState<User>({
@@ -28,14 +28,15 @@ export default function MyPage() {
   });
 
   useEffect(() => {
-    async function fetchUsers() {
-      const data: User = (await getUserInfo(userId)) || {
-        nickname: '',
-        email: '',
-        introduction: '',
+    const fetchUsers = async () => {
+      const { data } = await getUserInfo(userId);
+      const user: User = {
+        nickname: data?.nickname || '',
+        email: data?.email || '',
+        introduction: data?.introduction || '',
       };
-      setUser(data);
-    }
+      setUser(user);
+    };
     fetchUsers();
   }, [userId]);
 
@@ -52,7 +53,7 @@ export default function MyPage() {
           reviews_unwritten: reviewsUnwritten,
         });
       } catch (error) {
-        console.error('Unexpected error', error);
+        console.error('dataFetchingError', error);
       }
     };
     fetchData();
